@@ -33,6 +33,9 @@ export default {
       favicon: "./assets/images/favicon.png",
       dangerousAllowMutuallyExclusiveExtensions: true
     },
+    runtimeVersion: {
+      policy: "appVersion"
+    },
     devClient: {
       silentLaunch: true
     },

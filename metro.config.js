@@ -9,7 +9,7 @@ config.resolver.sourceExts.push('cjs');
 // Add react-native-vector-icons support
 config.resolver.assetExts.push('ttf');
 
-// Performance optimizations
+// Performance optimizations for production builds
 config.transformer = {
   ...config.transformer,
   minifierConfig: {
@@ -27,6 +27,12 @@ config.transformer = {
     toplevel: false,
     warnings: false,
   },
+  getTransformOptions: async () => ({
+    transform: {
+      experimentalImportSupport: false,
+      inlineRequires: true,
+    },
+  }),
 };
 
 // Increase memory allocation for bundling
@@ -39,6 +45,8 @@ config.server = {
     return (req, res, next) => {
       // Allow requests from any host (Replit proxy requirement)
       res.setHeader('Access-Control-Allow-Origin', '*');
+      res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+      res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
       return middleware(req, res, next);
     };
   },
