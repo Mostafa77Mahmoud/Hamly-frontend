@@ -1,5 +1,5 @@
 [build]
-  command = "EXPO_NO_SSR=1 npx expo export --platform web --output-dir dist"
+  command = "EXPO_USE_STATIC=1 EXPO_NO_SSR=1 npx expo export:web"
   publish = "dist"
 
 [[redirects]]
