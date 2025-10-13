@@ -1,5 +1,5 @@
 [build]
-  command = "npm install && EXPO_USE_STATIC=1 EXPO_NO_SSR=1 npx expo export --platform web --output-dir dist"
+  command = "npm install && EXPO_USE_STATIC=1 EXPO_NO_SSR=1 npx expo export --platform web --output-dir dist --no-bytecode --clear"
   publish = "dist"
 
 [[redirects]]

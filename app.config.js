@@ -4,6 +4,7 @@
 export default {
   expo: {
     jsEngine: "jsc",
+    newArchEnabled: false,
     name: "HamlyMD",
     slug: "hamly-md",
     version: "1.0.0",
@@ -29,7 +30,7 @@ export default {
     },
     web: {
       bundler: "metro",
-      output: "static",
+      output: "single",
       favicon: "./assets/images/favicon.png",
       dangerousAllowMutuallyExclusiveExtensions: true
     },
