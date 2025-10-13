@@ -1,6 +1,8 @@
 [build]
   command = "EXPO_USE_STATIC=1 EXPO_NO_SSR=1 npx expo export --platform web --output-dir dist"
   publish = "dist"
+  environment = { NODE_VERSION = "20" }
+
 [[redirects]]
   from = "/*"
   to = "/index.html"
