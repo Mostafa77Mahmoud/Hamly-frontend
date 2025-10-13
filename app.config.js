@@ -3,6 +3,7 @@
 
 export default {
   expo: {
+    jsEngine: "jsc",
     name: "HamlyMD",
     slug: "hamly-md",
     version: "1.0.0",
