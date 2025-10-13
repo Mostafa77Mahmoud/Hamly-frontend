@@ -7,7 +7,7 @@
     "dev": "cross-env EXPO_NO_TELEMETRY=1 npx expo start",
     "dev:web": "cross-env EXPO_NO_TELEMETRY=1 HOST=0.0.0.0 npx expo start --web --port 5000",
   "build": "expo export --platform web --output-dir dist --dump-sourcemap",
-  "build:web": "npx expo export --platform web --output-dir dist --no-ssr",
+  "build:web": "npx expo export --platform web",
     "start": "cross-env EXPO_NO_TELEMETRY=1 npx expo start --web --port 5000 --offline",
     "serve": "npx serve -s dist -l 5000",
     "lint": "npx expo lint",
