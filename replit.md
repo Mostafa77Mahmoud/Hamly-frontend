@@ -23,6 +23,10 @@ HamlyMD is a comprehensive pregnancy tracking and health management application 
 - Added Supabase environment variables (EXPO_PUBLIC_SUPABASE_URL, EXPO_PUBLIC_SUPABASE_ANON_KEY)
 - Created .gitignore for Node.js/Expo project
 - Configured deployment for autoscale with static web build
+- **Updated web build to use SPA (Single Page Application) mode** instead of static rendering
+- **Fixed Hermes transformer issues** by using `--no-bytecode` flag
+- **Optimized Metro config** for production builds with inline requires
+- **Tested build process successfully** - ready for Netlify deployment
 
 ## Architecture
 
