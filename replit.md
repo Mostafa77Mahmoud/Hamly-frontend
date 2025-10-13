@@ -27,6 +27,7 @@ HamlyMD is a comprehensive pregnancy tracking and health management application 
 - **Fixed Hermes transformer issues** by using `--no-bytecode` flag
 - **Optimized Metro config** for production builds with inline requires
 - **Tested build process successfully** - ready for Netlify deployment
+- **Optimized Netlify build command** - removed redundant npm install (Netlify auto-installs dependencies)
 
 ## Architecture
 
@@ -92,8 +93,12 @@ Required environment variables (already configured in Replit Secrets):
 
 ### Deployment Notes
 1. The Metro config is already set up to allow all hosts (required for Replit proxy)
-2. The app uses static rendering with Expo's web export
-3. Netlify configuration is available in `netlify.toml` if deploying there
+2. The app uses SPA (Single Page Application) mode with Expo's web export (`web.output: "single"`)
+3. Netlify configuration is available in `netlify.toml`:
+   - Build command: `EXPO_USE_STATIC=1 EXPO_NO_SSR=1 npx expo export --platform web --output-dir dist --no-bytecode --clear`
+   - Netlify automatically installs dependencies, so no need to add `npm install` to build command
+   - SPA redirects configured (`/* → /index.html`)
+   - Environment variables must be set in Netlify dashboard: `EXPO_PUBLIC_SUPABASE_URL`, `EXPO_PUBLIC_SUPABASE_ANON_KEY`
 
 ## Important Notes
 
