@@ -1,6 +1,7 @@
 [build]
-command = "npx expo export --platform web"
-publish = "dist"
+  command = "CI=false npm run build"
+  publish = "dist"
+
 
 [[redirects]]
   from = "/*"
