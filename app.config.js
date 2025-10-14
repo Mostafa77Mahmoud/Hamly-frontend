@@ -3,7 +3,7 @@
 
 export default {
   expo: {
-    jsEngine: "jsc",
+    jsEngine: "hermes",
     newArchEnabled: false,
     name: "Hamly",
     slug: "hamly-md",
