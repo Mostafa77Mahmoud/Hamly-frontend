@@ -5,7 +5,7 @@ export default {
   expo: {
     jsEngine: "jsc",
     newArchEnabled: false,
-    name: "HamlyMD",
+    name: "Hamly",
     slug: "hamly-md",
     version: "1.0.0",
     orientation: "portrait",
@@ -50,13 +50,13 @@ export default {
       [
         "expo-camera",
         {
-          cameraPermission: "Allow HamlyMD to access your camera to take photos of lab reports and documents."
+          cameraPermission: "Allow Hamly to access your camera to take photos of lab reports and documents."
         }
       ],
       [
         "expo-document-picker",
         {
-          documentsPermission: "Allow HamlyMD to access your documents to upload lab reports."
+          documentsPermission: "Allow Hamly to access your documents to upload lab reports."
         }
       ],
       [
