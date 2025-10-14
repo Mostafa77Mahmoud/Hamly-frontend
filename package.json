@@ -6,8 +6,9 @@
   "scripts": {
     "dev": "cross-env EXPO_NO_TELEMETRY=1 npx expo start",
     "dev:web": "cross-env EXPO_NO_TELEMETRY=1 HOST=0.0.0.0 npx expo start --web --port 5000",
-  "build": "expo export --platform web --output-dir dist --dump-sourcemap",
-  "build:web": "cross-env NODE_ENV=production EXPO_NO_SSR=1 EXPO_USE_STATIC=1 npx expo export --platform web --output-dir dist --no-bytecode --clear",
+    "build": "expo export --platform web --output-dir dist --dump-sourcemap",
+    "build:web": "cross-env NODE_ENV=production EXPO_NO_SSR=1 EXPO_USE_STATIC=1 npx expo export --platform web --output-dir dist --no-bytecode --clear && node scripts/cleanup-build.js",
+    "cleanup": "node scripts/cleanup-build.js",
     "start": "cross-env EXPO_NO_TELEMETRY=1 npx expo start --web --port 5000 --offline",
     "serve": "npx serve -s dist -l 5000",
     "lint": "npx expo lint",

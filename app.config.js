@@ -30,7 +30,7 @@ export default {
     },
     web: {
       bundler: "metro",
-      output: "single",
+      output: "static",
       favicon: "./assets/images/favicon.png",
       dangerousAllowMutuallyExclusiveExtensions: true,
       build: {
