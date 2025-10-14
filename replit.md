@@ -1,7 +1,7 @@
-# HamlyMD - Pregnancy Tracking App
+# Hamly - Pregnancy Tracking App
 
 ## Overview
-HamlyMD is a comprehensive pregnancy tracking and health management application built with Expo (React Native) for cross-platform support. The app provides features for pregnancy tracking, medication safety analysis, lab report processing, and symptom monitoring.
+Hamly is a comprehensive pregnancy tracking and health management application built with Expo (React Native) for cross-platform support. The app provides features for pregnancy tracking, medication safety analysis, lab report processing, and symptom monitoring.
 
 **Tech Stack:**
 - **Frontend:** Expo (React Native) with Expo Router for navigation
@@ -20,8 +20,18 @@ HamlyMD is a comprehensive pregnancy tracking and health management application 
 - ✅ Ready for Netlify deployment
 
 ## Recent Changes (October 14, 2025)
+
+### Latest Updates - App Name & Favicon Fix
+- ✅ Changed app name from "HamlyMD" to "Hamly" in app.config.js
+- ✅ Updated all permission messages to use "Hamly" instead of "HamlyMD"
+- ✅ Fixed favicon configuration - favicon.ico now properly generated (15KB)
+- ✅ Rebuilt production build with new branding
+- ✅ Verified title tag shows "Hamly" in both dev and production builds
+- ✅ Fixed .env.production issue (renamed to .env.production.example to prevent placeholder override)
+
+### Earlier Today
 - ✅ Installed all npm dependencies from package.json
-- ✅ Configured Supabase environment variables (EXPO_PUBLIC_SUPABASE_URL, EXPO_PUBLIC_SUPABASE_ANON_KEY)
+- ✅ Configured Supabase environment variables from .env file
 - ✅ Successfully built production dist folder with all assets and bundles
 - ✅ Verified development server works flawlessly with authentication flow
 - ✅ Confirmed netlify.toml configuration is correct for deployment
