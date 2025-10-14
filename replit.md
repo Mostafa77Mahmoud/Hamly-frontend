@@ -15,7 +15,7 @@ HamlyMD is a comprehensive pregnancy tracking and health management application 
 - ✅ Dependencies installed (npm install completed successfully)
 - ✅ Supabase credentials configured in Replit Secrets
 - ✅ Development server working perfectly on port 5000
-- ✅ Production dist folder built successfully (12MB, 61 files)
+- ✅ Production dist folder built successfully (12MB, 52 files - empty bundles removed)
 - ✅ Netlify deployment configuration verified
 - ✅ Ready for Netlify deployment
 
@@ -102,13 +102,34 @@ Required environment variables (already configured in Replit Secrets):
 - **Output:** Static files in `dist/` directory
 
 ### Deployment Notes
-1. The Metro config is already set up to allow all hosts (required for Replit proxy)
+1. The Metro config is set up to allow all hosts (required for Replit proxy)
 2. The app uses SPA (Single Page Application) mode with Expo's web export (`web.output: "single"`)
-3. Netlify configuration is available in `netlify.toml`:
-   - Build command: `EXPO_USE_STATIC=1 EXPO_NO_SSR=1 npx expo export --platform web --output-dir dist --no-bytecode --clear`
-   - Netlify automatically installs dependencies, so no need to add `npm install` to build command
+3. **Fixed empty JS files issue**: Build process now automatically removes empty bundle files
+4. Netlify configuration in `netlify.toml`:
+   - Build command: `npx expo export --platform web --output-dir dist --clear && find dist/_expo/static/js/web -type f -size 0 -delete`
+   - The build auto-deletes empty JS files that Expo generates during code splitting
+   - Netlify automatically installs dependencies
    - SPA redirects configured (`/* → /index.html`)
-   - Environment variables must be set in Netlify dashboard: `EXPO_PUBLIC_SUPABASE_URL`, `EXPO_PUBLIC_SUPABASE_ANON_KEY`
+   - **IMPORTANT**: Set environment variables in Netlify dashboard: `EXPO_PUBLIC_SUPABASE_URL`, `EXPO_PUBLIC_SUPABASE_ANON_KEY`
+
+## Netlify Deployment Steps
+
+### 1. Environment Variables Setup
+In your Netlify dashboard, go to Site settings → Environment variables and add:
+- `EXPO_PUBLIC_SUPABASE_URL` = Your Supabase project URL
+- `EXPO_PUBLIC_SUPABASE_ANON_KEY` = Your Supabase anonymous key
+
+### 2. Build Configuration
+The `netlify.toml` file is already configured with:
+- ✅ Auto-removal of empty JS files (fixes white screen issue)
+- ✅ SPA redirects for Expo Router
+- ✅ Security headers
+- ✅ Cache control for static assets
+
+### 3. Common Issues & Solutions
+- **White screen on Netlify**: Make sure environment variables are set in Netlify dashboard
+- **Empty JS files error**: Fixed by auto-cleanup in build command
+- **404 errors on routes**: SPA redirects are configured in netlify.toml
 
 ## Important Notes
 
