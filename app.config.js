@@ -73,6 +73,9 @@ export default {
       typedRoutes: true
     },
     extra: {
+      eas: {
+        projectId: "0a70a1df-c52c-44a8-a9fe-3a1e5cb8603e"
+      },
       supabaseUrl: process.env.EXPO_PUBLIC_SUPABASE_URL,
       supabaseAnonKey: process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY,
       // Note: Server-side API keys (Gemini, ElevenLabs) should NOT be exposed to client
