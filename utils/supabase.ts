@@ -64,25 +64,26 @@ export interface Database {
 // If not, the original Database definition from the provided snippet
 // should be included here.
 
-const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL || Constants.expoConfig?.extra?.supabaseUrl;
-const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || Constants.expoConfig?.extra?.supabaseAnonKey;
+const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL || Constants.expoConfig?.extra?.supabaseUrl || '';
+const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || Constants.expoConfig?.extra?.supabaseAnonKey || '';
 
-if (process.env.NODE_ENV !== 'production') {
-  console.log('Debug - Environment variables:');
-  console.log('process.env.EXPO_PUBLIC_SUPABASE_URL:', process.env.EXPO_PUBLIC_SUPABASE_URL);
-  console.log('Final supabaseUrl:', supabaseUrl);
-  console.log('Final supabaseAnonKey:', supabaseAnonKey ? '[SET]' : '[NOT SET]');
-}
+console.log('Debug - Environment variables:');
+console.log('process.env.EXPO_PUBLIC_SUPABASE_URL:', process.env.EXPO_PUBLIC_SUPABASE_URL);
+console.log('Final supabaseUrl:', supabaseUrl || '[NOT SET]');
+console.log('Final supabaseAnonKey:', supabaseAnonKey ? '[SET]' : '[NOT SET]');
 
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.error('Missing Supabase environment variables');
-  throw new Error('Missing Supabase environment variables. Please check your environment configuration.');
+  console.error('⚠️ Missing Supabase environment variables - App will not function properly');
+  console.error('Please set EXPO_PUBLIC_SUPABASE_URL and EXPO_PUBLIC_SUPABASE_ANON_KEY');
+  // Don't throw error, allow app to load with warning
 }
 
-try {
-  new URL(supabaseUrl);
-} catch (error) {
-  throw new Error(`Invalid Supabase URL: ${supabaseUrl}`);
+if (supabaseUrl) {
+  try {
+    new URL(supabaseUrl);
+  } catch (error) {
+    console.error(`Invalid Supabase URL: ${supabaseUrl}`);
+  }
 }
 
 const createPlatformStorage = () => {
@@ -124,8 +125,14 @@ let clientCreationTime = Date.now();
 let isRecreating = false;
 
 // إنشاء client مع إعدادات محسنة لحل مشكلة Alt+Tab
-function createSupabaseClient(): SupabaseClient<Database> {
+function createSupabaseClient(): SupabaseClient<Database> | null {
   console.log('[SUPABASE_CLIENT] Creating new client instance');
+  
+  // Return null if credentials are missing
+  if (!supabaseUrl || !supabaseAnonKey) {
+    console.error('[SUPABASE_CLIENT] Cannot create client - missing credentials');
+    return null;
+  }
 
   return createClient<Database>(supabaseUrl, supabaseAnonKey, {
     auth: {
@@ -156,7 +163,7 @@ function createSupabaseClient(): SupabaseClient<Database> {
 }
 
 // إعادة إنشاء الـ client بشكل آمن
-async function recreateClient(reason: string): Promise<SupabaseClient<Database>> {
+async function recreateClient(reason: string): Promise<SupabaseClient<Database> | null> {
   if (isRecreating) {
     console.log('[SUPABASE_RECOVERY] Already recreating, waiting...');
     // انتظر حتى ينتهي الـ recreation الجاري
@@ -190,6 +197,12 @@ async function recreateClient(reason: string): Promise<SupabaseClient<Database>>
 
     // أنشئ client جديد
     const newClient = createSupabaseClient();
+    
+    // If client creation failed, return null
+    if (!newClient) {
+      console.error('[SUPABASE_RECOVERY] Failed to create new client - missing credentials');
+      return null;
+    }
 
     // استعد الجلسة إذا كانت موجودة
     if (savedSession?.access_token) {
@@ -251,8 +264,8 @@ async function recreateClient(reason: string): Promise<SupabaseClient<Database>>
   }
 }
 
-// اكتشاف الـ freeze وإعادة الإنشاء تلقائيًا
-async function ensureClientHealth(): Promise<SupabaseClient<Database>> {
+// اكتشاف الـ freeze وإعادة الإنشاء تلقائيًا  
+async function ensureClientHealth(): Promise<SupabaseClient<Database> | null> {
   if (!currentClient) {
     console.log('[SUPABASE_HEALTH] No client found, creating initial client.');
     currentClient = createSupabaseClient();
@@ -304,11 +317,14 @@ async function ensureClientHealth(): Promise<SupabaseClient<Database>> {
 try {
     currentClient = createSupabaseClient();
     clientCreationTime = Date.now();
-    console.log('[SUPABASE_INIT] Initial client created.');
+    if (currentClient) {
+        console.log('[SUPABASE_INIT] Initial client created successfully.');
+    } else {
+        console.warn('[SUPABASE_INIT] Client not created - missing credentials. App will run in limited mode.');
+    }
 } catch (error) {
     console.error('[SUPABASE_INIT] Failed to create initial client:', error);
-    // Decide how to handle this critical failure. Throwing an error might be appropriate.
-    throw new Error('Failed to initialize Supabase client.');
+    currentClient = null;
 }
 
 
