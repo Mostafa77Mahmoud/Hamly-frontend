@@ -20,9 +20,11 @@ export default {
       "**/*"
     ],
     ios: {
-      supportsTablet: true
+      supportsTablet: true,
+      bundleIdentifier: "com.hamlymd.app"
     },
     android: {
+      package: "com.hamlymd.app",
       adaptiveIcon: {
         foregroundImage: "./assets/images/app-icon.png",
         backgroundColor: "#ffffff"

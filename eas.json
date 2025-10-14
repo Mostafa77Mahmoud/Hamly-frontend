@@ -22,12 +22,22 @@
         "simulator": true
       }
     },
+    "preview-apk": {
+      "android": {
+        "buildType": "apk"
+      }
+    },
     "production": {
       "android": {
         "buildType": "aab"
       },
       "ios": {
         "buildConfiguration": "Release"
+      }
+    },
+    "production-apk": {
+      "android": {
+        "buildType": "apk"
       }
     }
   },
