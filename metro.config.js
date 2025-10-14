@@ -11,14 +11,19 @@ config.resolver.assetExts.push('ttf');
 // Performance optimizations for production builds
 config.transformer = {
   ...config.transformer,
+  minifierPath: require.resolve('metro-minify-terser'),
   minifierConfig: {
-    keep_classnames: true,
-    keep_fnames: true,
+    compress: false,
+    mangle: false,
+    output: {
+      comments: true,
+      beautify: true,
+    },
   },
   getTransformOptions: async () => ({
     transform: {
       experimentalImportSupport: false,
-      inlineRequires: true,
+      inlineRequires: false,
     },
   }),
 };
