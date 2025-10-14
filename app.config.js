@@ -32,7 +32,12 @@ export default {
       bundler: "metro",
       output: "single",
       favicon: "./assets/images/favicon.png",
-      dangerousAllowMutuallyExclusiveExtensions: true
+      dangerousAllowMutuallyExclusiveExtensions: true,
+      build: {
+        babel: {
+          include: ["@supabase/supabase-js"]
+        }
+      }
     },
     runtimeVersion: {
       policy: "appVersion"

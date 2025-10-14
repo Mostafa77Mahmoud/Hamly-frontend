@@ -33,7 +33,7 @@ export default function PregnancyStatusCard({
   language = 'en',
 }: PregnancyStatusCardProps) {
   const isRTL = useIsRTL();
-  const scale = useSharedValue(0.9);
+  const scale = useSharedValue(0);
   const opacity = useSharedValue(0);
 
   useEffect(() => {

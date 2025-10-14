@@ -15,22 +15,28 @@ config.transformer = {
   minifierConfig: {
     mangle: {
       keep_fnames: true,
+      keep_classnames: true,
     },
     output: {
       ascii_only: true,
       quote_keys: true,
       wrap_iife: true,
+      comments: false,
     },
     sourceMap: {
       includeSources: false,
     },
     toplevel: false,
     warnings: false,
+    compress: {
+      drop_console: process.env.NODE_ENV === 'production',
+      pure_funcs: process.env.NODE_ENV === 'production' ? ['console.log', 'console.debug'] : [],
+    },
   },
   getTransformOptions: async () => ({
     transform: {
       experimentalImportSupport: false,
-      inlineRequires: false,
+      inlineRequires: true,
     },
   }),
 };

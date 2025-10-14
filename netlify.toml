@@ -1,5 +1,5 @@
 [build]
-  command = "EXPO_PUBLIC_SUPABASE_URL=$EXPO_PUBLIC_SUPABASE_URL EXPO_PUBLIC_SUPABASE_ANON_KEY=$EXPO_PUBLIC_SUPABASE_ANON_KEY npx expo export --platform web --output-dir dist --clear && find dist/_expo/static/js/web -type f -size 0 -delete"
+  command = "NODE_ENV=production EXPO_PUBLIC_SUPABASE_URL=$EXPO_PUBLIC_SUPABASE_URL EXPO_PUBLIC_SUPABASE_ANON_KEY=$EXPO_PUBLIC_SUPABASE_ANON_KEY npx expo export --platform web --output-dir dist --clear --minify && find dist/_expo/static/js/web -type f -size 0 -delete || true"
   publish = "dist"
 
 [[redirects]]
