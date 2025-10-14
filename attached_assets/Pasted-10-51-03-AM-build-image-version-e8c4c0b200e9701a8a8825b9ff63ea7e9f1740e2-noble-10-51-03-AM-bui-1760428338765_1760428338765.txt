@@ -1,0 +1,220 @@
+10:51:03 AM: build-image version: e8c4c0b200e9701a8a8825b9ff63ea7e9f1740e2 (noble)
+10:51:03 AM: buildbot version: a8227f684d13e2f14c4dff2ff89b1b5fbedbc9d9
+10:51:04 AM: Fetching cached dependencies
+10:51:04 AM: Failed to fetch cache, continuing with build
+10:51:04 AM: Starting to prepare the repo for build
+10:51:04 AM: No cached dependencies found. Cloning fresh repo
+10:51:04 AM: git clone --filter=blob:none https://github.com/Mostafa77Mahmoud/Hamly-frontend
+10:51:04 AM: Preparing Git Reference refs/heads/main
+10:51:06 AM: Starting to install dependencies
+10:51:07 AM: Downloading and installing node v20.19.5...
+10:51:07 AM: Downloading https://nodejs.org/dist/v20.19.5/node-v20.19.5-linux-x64.tar.xz...
+10:51:07 AM: Computing checksum with sha256sum
+10:51:07 AM: Checksums matched!
+10:51:09 AM: Now using node v20.19.5 (npm v10.8.2)
+10:51:09 AM: Enabling Node.js Corepack
+10:51:09 AM: Started restoring cached build plugins
+10:51:09 AM: Finished restoring cached build plugins
+10:51:09 AM: Started restoring cached corepack dependencies
+10:51:09 AM: Finished restoring cached corepack dependencies
+10:51:09 AM: No npm workspaces detected
+10:51:09 AM: Started restoring cached node modules
+10:51:09 AM: Finished restoring cached node modules
+10:51:09 AM: Installing npm packages using npm version 10.8.2
+10:51:12 AM: npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+10:51:12 AM: npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+10:51:12 AM: npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+10:51:12 AM: npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+10:51:12 AM: npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+10:51:12 AM: npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+10:51:12 AM: npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+10:51:14 AM: npm warn deprecated @xmldom/xmldom@0.7.13: this version is no longer supported, please update to at least 0.8.*
+10:51:14 AM: npm warn deprecated @babel/plugin-proposal-nullish-coalescing-operator@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-nullish-coalescing-operator instead.
+10:51:14 AM: npm warn deprecated @babel/plugin-proposal-optional-chaining@7.21.0: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-optional-chaining instead.
+10:51:14 AM: npm warn deprecated @babel/plugin-proposal-class-properties@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-class-properties instead.
+10:51:14 AM: npm warn deprecated rimraf@2.6.3: Rimraf versions prior to v4 are no longer supported
+10:51:16 AM: npm warn deprecated react-native-vector-icons@10.3.0: react-native-vector-icons package has moved to a new model of per-icon-family packages. See the https://github.com/oblador/react-native-vector-icons/blob/master/MIGRATION.md on how to migrate
+10:51:19 AM: added 1052 packages, and audited 1053 packages in 10s
+10:51:19 AM: 123 packages are looking for funding
+10:51:19 AM:   run `npm fund` for details
+10:51:19 AM: found 0 vulnerabilities
+10:51:19 AM: npm packages installed
+10:51:19 AM: Successfully installed dependencies
+10:51:19 AM: Starting build script
+10:51:20 AM: Detected 1 framework(s)
+10:51:20 AM: "expo" at version "52.0.47"
+10:51:20 AM: Section completed: initializing
+10:51:22 AM: ​
+10:51:22 AM: Netlify Build                                                 
+10:51:22 AM: ────────────────────────────────────────────────────────────────
+10:51:22 AM: ​
+10:51:22 AM: ❯ Version
+10:51:22 AM:   @netlify/build 35.1.8
+10:51:22 AM: ​
+10:51:22 AM: ❯ Flags
+10:51:22 AM:   accountId: 682329a37bfc0a5cb180548e
+10:51:22 AM:   baseRelDir: true
+10:51:22 AM:   buildId: 68ee00e6889a46a4f2d11e7b
+10:51:22 AM:   deployId: 68ee00e6889a46a4f2d11e7d
+10:51:22 AM: ​
+10:51:22 AM: ❯ Current directory
+10:51:22 AM:   /opt/build/repo
+10:51:22 AM: ​
+10:51:22 AM: ❯ Config file
+10:51:22 AM:   /opt/build/repo/netlify.toml
+10:51:22 AM: ​
+10:51:22 AM: ❯ Context
+10:51:22 AM:   production
+10:51:22 AM: ​
+10:51:22 AM: build.command from netlify.toml                               
+10:51:22 AM: ────────────────────────────────────────────────────────────────
+10:51:22 AM: ​
+10:51:22 AM: $ EXPO_USE_STATIC=1 EXPO_NO_SSR=1 npx expo export --platform web --output-dir dist --no-bytecode --clear
+10:51:23 AM: Starting Metro Bundler
+10:51:23 AM: warning: Bundler cache is empty, rebuilding (this may take a minute)
+10:51:56 AM: Failed during stage 'building site': Build script returned non-zero exit code: 2 (https://ntl.fyi/exit-code-2)
+10:51:54 AM: Web Bundled 28816ms node_modules/expo-router/entry.js (2686 modules)
+10:51:54 AM: › Assets (46):
+10:51:54 AM: assets/images/hamly transparent logo.8d43402dc5a338accf02a04167b2480d.png (47.2 kB)
+10:51:54 AM: node_modules/@expo-google-fonts/inter/Inter_100Thin.2dce622147cace7b467d9929b7708430.ttf (311 kB)
+10:51:54 AM: node_modules/@expo-google-fonts/inter/Inter_200ExtraLight.0f3ac0692901f70f1ac32cf079355051.ttf (311 kB)
+10:51:54 AM: node_modules/@expo-google-fonts/inter/Inter_300Light.d55f45d07cfe01e8797bd1566561f718.ttf (310 kB)
+10:51:54 AM: node_modules/@expo-google-fonts/inter/Inter_400Regular.079af0e2936ccb99b391ddc0bbb73dcb.ttf (310 kB)
+10:51:54 AM: node_modules/@expo-google-fonts/inter/Inter_500Medium.ed533866b5c83114c7dddbcbc2288b19.ttf (315 kB)
+10:51:54 AM: node_modules/@expo-google-fonts/inter/Inter_600SemiBold.07a48beb92b401297a76ff9f6aedd0ed.ttf (316 kB)
+10:51:54 AM: node_modules/@expo-google-fonts/inter/Inter_700Bold.275bfea5dc74c33f51916fee80feae67.ttf (316 kB)
+10:51:54 AM: node_modules/@expo-google-fonts/inter/Inter_800ExtraBold.c9709fb8e32755490795ce5bd226c3a0.ttf (317 kB)
+10:51:54 AM: node_modules/@expo-google-fonts/inter/Inter_900Black.980c7e8757e741bb49c7c96513924c61.ttf (316 kB)
+10:51:54 AM: node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/AntDesign.3a2ba31570920eeb9b1d217cabe58315.ttf (70.3 kB)
+10:51:54 AM: node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/Entypo.31b5ffea3daddc69dd01a1f3d6cf63c5.ttf (66.2 kB)
+10:51:54 AM: node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/EvilIcons.140c53a7643ea949007aa9a282153849.ttf (13.5 kB)
+10:51:54 AM: node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/Feather.a76d309774d33d9856f650bed4292a23.ttf (56.2 kB)
+10:51:54 AM: node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/FontAwesome.b06871f281fee6b241d60582ae9369b9.ttf (166 kB)
+10:51:54 AM: node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/FontAwesome5_Brands.3b89dd103490708d19a95adcae52210e.ttf (134 kB)
+10:51:54 AM: node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/FontAwesome5_Regular.1f77739ca9ff2188b539c36f30ffa2be.ttf (33.7 kB)
+10:51:54 AM: node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/FontAwesome5_Solid.605ed7926cf39a2ad5ec2d1f9d391d3d.ttf (203 kB)
+10:51:54 AM: node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/FontAwesome6_Brands.56c8d80832e37783f12c05db7c8849e2.ttf (209 kB)
+10:51:54 AM: node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/FontAwesome6_Regular.370dd5af19f8364907b6e2c41f45dbbf.ttf (68 kB)
+10:51:54 AM: node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/FontAwesome6_Solid.adec7d6f310bc577f05e8fe06a5daccf.ttf (424 kB)
+10:51:54 AM: node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/Fontisto.b49ae8ab2dbccb02c4d11caaacf09eab.ttf (314 kB)
+10:51:54 AM: node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/Foundation.e20945d7c929279ef7a6f1db184a4470.ttf (57 kB)
+10:51:54 AM: node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/Ionicons.6148e7019854f3bde85b633cb88f3c25.ttf (443 kB)
+10:51:54 AM: node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/MaterialCommunityIcons.b62641afc9ab487008e996a5c5865e56.ttf (1.15 MB)
+10:51:54 AM: node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/MaterialIcons.4e85bc9ebe07e0340c9c4fc2f6c38908.ttf (357 kB)
+10:51:54 AM: node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/Octicons.f7c53c47a66934504fcbc7cc164895a7.ttf (49.4 kB)
+10:51:54 AM: node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/SimpleLineIcons.d2285965fe34b05465047401b8595dd0.ttf (54.1 kB)
+10:51:54 AM: node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/Zocial.1681f34aaca71b8dfb70756bca331eb2.ttf (25.8 kB)
+10:51:54 AM: node_modules/@react-navigation/elements/lib/module/assets/back-icon-mask.0a328cd9c1afd0afe8e3b1ec5165b1b4.png (653 B)
+10:51:54 AM: node_modules/@react-navigation/elements/lib/module/assets/back-icon.35ba0eaec5a4f5ed12ca16fabeae451d.png (207 B)
+10:51:54 AM: node_modules/@react-navigation/elements/lib/module/assets/clear-icon.c94f6478e7ae0cdd9f15de1fcb9e5e55.png (4 variations | 425 B)
+10:51:54 AM: node_modules/@react-navigation/elements/lib/module/assets/close-icon.808e1b1b9b53114ec2838071a7e6daa7.png (4 variations | 235 B)
+10:51:54 AM: node_modules/@react-navigation/elements/lib/module/assets/search-icon.286d67d3f74808a60a78d3ebf1a5fb57.png (928 B)
+10:51:54 AM: node_modules/expo-router/assets/error.d1ea1496f9057eb392d5bbf3732a61b7.png (469 B)
+10:51:54 AM: node_modules/expo-router/assets/file.19eeb73b9593a38f8e9f418337fc7d10.png (138 B)
+10:51:54 AM: node_modules/expo-router/assets/forward.d8b800c443b8972542883e0b9de2bdc6.png (188 B)
+10:51:54 AM: node_modules/expo-router/assets/pkg.ab19f4cbc543357183a20571f68380a3.png (364 B)
+10:51:54 AM: node_modules/expo-router/assets/sitemap.412dd9275b6b48ad28f5e3d81bb1f626.png (465 B)
+10:51:54 AM: node_modules/expo-router/assets/unmatched.20e71bdf79e3a97bf55fd9e164041578.png (4.75 kB)
+10:51:54 AM: › web bundles (12):
+10:51:54 AM: _expo/static/js/web/browser-d41d8cd98f00b204e9800998ecf8427e.js (0 B)
+10:51:54 AM: _expo/static/js/web/cacheManager-29177ab1e75c9cd9af0648ca77735c27.js (1.86 kB)
+10:51:54 AM: _expo/static/js/web/DataContext-d41d8cd98f00b204e9800998ecf8427e.js (0 B)
+10:51:54 AM: _expo/static/js/web/entry-db33a8b4665116413328862183f04edf.js (4.61 MB)
+10:51:54 AM: _expo/static/js/web/index-d41d8cd98f00b204e9800998ecf8427e.js (0 B)
+10:51:54 AM: _expo/static/js/web/networkTracer-d41d8cd98f00b204e9800998ecf8427e.js (0 B)
+10:51:54 AM: _expo/static/js/web/pregnancy-d41d8cd98f00b204e9800998ecf8427e.js (0 B)
+10:51:54 AM: _expo/static/js/web/robustDatabase-b6b3323859aa83e6ed7f61a89f689fc3.js (6.98 kB)
+10:51:54 AM: _expo/static/js/web/sessionManager-d41d8cd98f00b204e9800998ecf8427e.js (0 B)
+10:51:54 AM: _expo/static/js/web/supabase-d41d8cd98f00b204e9800998ecf8427e.js (0 B)
+10:51:54 AM: _expo/static/js/web/supabaseClientRecovery-9e21fb06eba15954ae988ef8aa72948d.js (5.28 kB)
+10:51:54 AM: _expo/static/js/web/supabaseStorage-d41d8cd98f00b204e9800998ecf8427e.js (0 B)
+10:51:54 AM: › Files (3):
+10:51:54 AM: favicon.ico (14.5 kB)
+10:51:54 AM: index.html (1.22 kB)
+10:51:54 AM: metadata.json (49 B)
+10:51:54 AM: Exported: dist
+10:51:55 AM: ​
+10:51:55 AM: (build.command completed in 33.3s)
+10:51:55 AM: ​
+10:51:55 AM: Scanning for secrets in code and build output.                
+10:51:55 AM: ────────────────────────────────────────────────────────────────
+10:51:55 AM: ​
+10:51:55 AM: ​
+10:51:55 AM: ❯ Scanning complete. 134 file(s) scanned. Secrets scanning found 4 instance(s) of secrets in build output or repo code.
+10:51:55 AM: ​
+10:51:55 AM: Secret env var "EXPO_PUBLIC_SUPABASE_URL"'s value detected:
+  found value at line 1 in .env.local
+10:51:55 AM:   found value at line 377 in dist/_expo/static/js/web/entry-db33a8b4665116413328862183f04edf.js
+10:51:55 AM:   found value at line 740 in dist/_expo/static/js/web/entry-db33a8b4665116413328862183f04edf.js
+10:51:55 AM:   found value at line 828 in dist/_expo/static/js/web/entry-db33a8b4665116413328862183f04edf.js
+10:51:55 AM: Secret env var "service_role_secret_key"'s value detected:
+  found value at line 6 in .env.local
+10:51:55 AM: Secret env var "EXPO_PUBLIC_API_URL"'s value detected:
+  found value at line 3 in .env.local
+10:51:55 AM:   found value at line 7 in .env.local
+10:51:55 AM:   found value at line 37 in README.md
+10:51:55 AM:   found value at line 182 in README.md
+10:51:55 AM:   found value at line 839 in dist/_expo/static/js/web/entry-db33a8b4665116413328862183f04edf.js
+10:51:55 AM:   found value at line 113 in replit.md
+10:51:55 AM:   found value at line 2 in utils/apiConfig.ts
+10:51:55 AM:   found value at line 25 in utils/apiConfig.ts
+10:51:55 AM:   found value at line 29 in utils/apiConfig.ts
+10:51:55 AM: Secret env var "EXPO_PUBLIC_SUPABASE_ANON_KEY"'s value detected:
+  found value at line 2 in .env.local
+10:51:55 AM:   found value at line 377 in dist/_expo/static/js/web/entry-db33a8b4665116413328862183f04edf.js
+10:51:55 AM:   found value at line 740 in dist/_expo/static/js/web/entry-db33a8b4665116413328862183f04edf.js
+10:51:55 AM:   found value at line 828 in dist/_expo/static/js/web/entry-db33a8b4665116413328862183f04edf.js
+10:51:55 AM: ​
+10:51:55 AM: To prevent exposing secrets, the build will fail until these secret values are not found in build output or repo files.
+10:51:55 AM: ​
+10:51:55 AM: If these are expected, use SECRETS_SCAN_OMIT_PATHS, SECRETS_SCAN_OMIT_KEYS, or SECRETS_SCAN_ENABLED to prevent detecting.
+10:51:55 AM: ​
+10:51:55 AM: For more information on secrets scanning, see the Netlify Docs: https://ntl.fyi/configure-secrets-scanning
+10:51:55 AM: ​
+10:51:55 AM: Secrets scanning detected secrets in files during build.      
+10:51:55 AM: ────────────────────────────────────────────────────────────────
+10:51:55 AM: ​
+10:51:55 AM:   Error message
+10:51:55 AM:   Secrets scanning found secrets in build.
+10:51:55 AM: ​
+10:51:55 AM:   Resolved config
+10:51:55 AM:   build:
+10:51:55 AM:     command: EXPO_USE_STATIC=1 EXPO_NO_SSR=1 npx expo export --platform web
+10:51:55 AM:       --output-dir dist --no-bytecode --clear
+10:51:55 AM:     commandOrigin: config
+10:51:55 AM:     environment:
+10:51:55 AM:       - EXPO_PUBLIC_API_BASE_URL
+10:51:55 AM:       - EXPO_PUBLIC_API_URL
+10:51:55 AM:       - EXPO_PUBLIC_SUPABASE_ANON_KEY
+10:51:55 AM:       - EXPO_PUBLIC_SUPABASE_URL
+10:51:55 AM:       - GEMINI_API_KEY
+10:51:55 AM:       - service_role_secret_key
+10:51:55 AM:       - NODE_VERSION
+10:51:55 AM:       - NPM_FLAGS
+10:51:55 AM:     publish: /opt/build/repo/dist
+10:51:55 AM:     publishOrigin: config
+10:51:55 AM:   headers:
+10:51:55 AM:     - for: /*
+      values:
+        Referrer-Policy: strict-origin-when-cross-origin
+        X-Content-Type-Options: nosniff
+        X-Frame-Options: DENY
+        X-XSS-Protection: 1; mode=block
+    - for: /static/*
+      values:
+        Cache-Control: public, max-age=31536000, immutable
+    - for: /*.js
+      values:
+        Cache-Control: public, max-age=31536000, immutable
+    - for: /*.css
+      values:
+        Cache-Control: public, max-age=31536000, immutable
+  headersOrigin: config
+  redirects:
+    - from: /*
+      status: 200
+      to: /index.html
+  redirectsOrigin: config
+10:51:55 AM: Build failed due to a user error: Build script returned non-zero exit code: 2
+10:51:56 AM: Failing build: Failed to build site
+10:51:56 AM: Finished processing build request in 52.364s
