@@ -1,8 +1,21 @@
 # Production APK Build Instructions
 
-## What Was Fixed
+## Critical Crash Fixes Applied
 
-The app was crashing on Android because it tried to call backend API at `localhost:3001` which doesn't exist on mobile devices. The following fixes were implemented:
+### Issue 1: Login Crash (FIXED - October 15, 2025)
+**Problem:** APK crashed immediately on login, then crashed on every reopen
+**Root Cause:** Promise.all() in DataProvider crashed when any data fetch failed
+**Solution:**
+- Replaced Promise.all with Promise.allSettled (tolerates individual failures)
+- Added safe defaults for failed data fetches (null/empty arrays)
+- Enhanced ErrorBoundary to clear corrupted sessions and work on native
+- Added session corruption detection and auto-cleanup in AuthContext
+
+### Issue 2: Backend API Crashes (FIXED - October 15, 2025)
+**Problem:** App crashed when backend API at `localhost:3001` was unreachable on mobile
+**Solution:** Made all backend calls optional with proper error handling
+
+## All Fixes Implemented:
 
 ### 1. Backend API Availability Check
 - Added `isBackendAvailable()` function that detects if backend is reachable

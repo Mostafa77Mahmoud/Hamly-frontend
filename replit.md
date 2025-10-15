@@ -21,7 +21,19 @@ Hamly is a comprehensive pregnancy tracking and health management application bu
 
 ## Recent Changes (October 15, 2025)
 
-### Latest Updates - Backend API Crash Fix (Complete) - October 15, 2025
+### Latest Updates - Login Crash Fix (CRITICAL) - October 15, 2025
+- ✅ **CRITICAL: Fixed APK crash on login and persistent crashes on reopen**
+- ✅ **Root Cause:** Promise.all() in DataProvider crashed when any data fetch failed (profile, pregnancy, meds, symptoms, labs)
+- ✅ **Fix 1: Promise.allSettled** - Replaced Promise.all with Promise.allSettled so individual fetch failures don't crash the app
+- ✅ **Fix 2: Error Boundary** - Enhanced to work on both web/native, clears corrupted session on error, uses expo-updates reload
+- ✅ **Fix 3: Session Cleanup** - Added corrupted session detection and auto-cleanup in AuthContext to prevent persistent crashes
+- ✅ Files modified:
+  - contexts/DataContext.tsx (Promise.allSettled + safe defaults for failed fetches)
+  - contexts/AuthContext.tsx (corrupted session detection and cleanup)
+  - components/ErrorBoundary.tsx (native support + session cleanup)
+- ✅ **Result:** App no longer crashes on login or reopen, gracefully handles partial data fetch failures
+
+### Previous Update - Backend API Crash Fix (Complete) - October 15, 2025
 - ✅ **CRITICAL: Fixed APK crashes when backend unavailable** - App no longer crashes when EXPO_PUBLIC_API_BASE_URL is localhost or not set
 - ✅ **Made all backend API calls optional** - AI features (medication safety, symptom analysis, lab processing) gracefully handle backend unavailability
 - ✅ **Smart backend detection** - Automatically detects if backend is available based on environment (web vs native) and URL
