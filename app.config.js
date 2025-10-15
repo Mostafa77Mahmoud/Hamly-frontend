@@ -42,9 +42,7 @@ export default {
         }
       }
     },
-    runtimeVersion: {
-      policy: "appVersion"
-    },
+    runtimeVersion: "1.0.0",
     devClient: {
       silentLaunch: true
     },
