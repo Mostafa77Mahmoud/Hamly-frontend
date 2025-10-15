@@ -71,15 +71,32 @@ export function AuthProvider({ children }: AuthProviderProps) {
         try {
           const storedSession = await AsyncStorage.getItem('hamlymd-auth-token');
           if (storedSession && mounted) {
-            const parsedSession = JSON.parse(storedSession);
-            if (parsedSession.currentSession) {
-              console.log('[AUTH_CONTEXT] Restored session from storage');
-              setSession(parsedSession.currentSession);
-              setUser(parsedSession.currentSession.user);
+            try {
+              const parsedSession = JSON.parse(storedSession);
+              if (parsedSession.currentSession && parsedSession.currentSession.user) {
+                console.log('[AUTH_CONTEXT] Restored session from storage');
+                setSession(parsedSession.currentSession);
+                setUser(parsedSession.currentSession.user);
+              } else {
+                // Session data is corrupted, clear it
+                console.warn('[AUTH_CONTEXT] Session data corrupted, clearing...');
+                await AsyncStorage.removeItem('hamlymd-auth-token');
+              }
+            } catch (parseError) {
+              // JSON parsing failed, session is corrupted
+              console.error('[AUTH_CONTEXT] Session data corrupted (parse failed), clearing:', parseError);
+              await AsyncStorage.removeItem('hamlymd-auth-token');
             }
           }
         } catch (storageError) {
           console.error('[AUTH_CONTEXT] Storage recovery failed:', storageError);
+          // Clear corrupted storage to prevent persistent crashes
+          try {
+            await AsyncStorage.removeItem('hamlymd-auth-token');
+            console.log('[AUTH_CONTEXT] Cleared potentially corrupted session');
+          } catch (clearError) {
+            console.error('[AUTH_CONTEXT] Failed to clear corrupted session:', clearError);
+          }
         }
 
         if (mounted) {

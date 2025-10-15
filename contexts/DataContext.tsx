@@ -506,10 +506,11 @@ export function DataProvider({ children }: DataProviderProps) {
     }
 
     try {
-      console.log(`[${refreshId}] 📥 Starting Promise.all for data loading...`);
+      console.log(`[${refreshId}] 📥 Starting Promise.allSettled for data loading (crash-safe)...`);
       const startTime = Date.now();
 
-      const [profile, pregnancy, meds, symp, labData] = await Promise.all([
+      // Use Promise.allSettled instead of Promise.all to prevent crash on individual failures
+      const results = await Promise.allSettled([
         retryWithBackoff(() => loadUserProfile(abortController.signal), RETRY_CONFIG.maxRetries, abortController.signal),
         retryWithBackoff(() => loadActivePregnancy(abortController.signal), RETRY_CONFIG.maxRetries, abortController.signal),
         retryWithBackoff(() => loadMedications(abortController.signal), RETRY_CONFIG.maxRetries, abortController.signal),
@@ -518,6 +519,22 @@ export function DataProvider({ children }: DataProviderProps) {
       ]);
 
       const loadTime = Date.now() - startTime;
+      
+      // Extract results or use safe defaults
+      const profile = results[0].status === 'fulfilled' ? results[0].value : null;
+      const pregnancy = results[1].status === 'fulfilled' ? results[1].value : null;
+      const meds = results[2].status === 'fulfilled' ? results[2].value : [];
+      const symp = results[3].status === 'fulfilled' ? results[3].value : [];
+      const labData = results[4].status === 'fulfilled' ? results[4].value : { reports: [], results: [] };
+
+      // Log any failures
+      results.forEach((result, index) => {
+        const names = ['profile', 'pregnancy', 'medications', 'symptoms', 'lab data'];
+        if (result.status === 'rejected') {
+          console.warn(`[${refreshId}] ⚠️ Failed to load ${names[index]}:`, result.reason);
+        }
+      });
+
       console.log(`[${refreshId}] ⏱️ Data loaded in ${loadTime}ms`, {
         profileLoaded: !!profile,
         pregnancyLoaded: !!pregnancy,
@@ -527,7 +544,7 @@ export function DataProvider({ children }: DataProviderProps) {
       });
 
       if (!abortController.signal.aborted) {
-        console.log(`[${refreshId}] 💾 Updating state with loaded data...`);
+        console.log(`[${refreshId}] 💾 Updating state with loaded data (using safe defaults for failures)...`);
         setUserProfile(profile);
         setActivePregnancy(pregnancy);
         setMedications(meds);
@@ -537,7 +554,7 @@ export function DataProvider({ children }: DataProviderProps) {
         setDataLoaded(true);
         setError(null);
         lastRefreshTimeRef.current = Date.now();
-        console.log(`[${refreshId}] ✅ All data refreshed successfully`);
+        console.log(`[${refreshId}] ✅ Data refresh completed (some items may have failed gracefully)`);
       } else {
         console.log(`[${refreshId}] 🚫 Refresh aborted, skipping state update`);
       }
@@ -690,13 +707,21 @@ export function DataProvider({ children }: DataProviderProps) {
           const startTime = Date.now();
 
           try {
-            const [profile, pregnancy, meds, symp, labData] = await Promise.all([
+            // Use Promise.allSettled to prevent crash on individual failures
+            const results = await Promise.allSettled([
               loadUserProfile(new AbortController().signal),
               loadActivePregnancy(new AbortController().signal),
               loadMedications(new AbortController().signal),
               loadSymptoms(new AbortController().signal),
               loadLabData(new AbortController().signal),
             ]);
+            
+            // Extract results or use safe defaults
+            const profile = results[0].status === 'fulfilled' ? results[0].value : null;
+            const pregnancy = results[1].status === 'fulfilled' ? results[1].value : null;
+            const meds = results[2].status === 'fulfilled' ? results[2].value : [];
+            const symp = results[3].status === 'fulfilled' ? results[3].value : [];
+            const labData = results[4].status === 'fulfilled' ? results[4].value : { reports: [], results: [] };
 
             const loadTime = Date.now() - startTime;
             console.log(`[${resyncId}] ⏱️ Silent load completed in ${loadTime}ms`, {
