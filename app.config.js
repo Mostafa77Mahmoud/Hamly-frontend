@@ -29,7 +29,12 @@ export default {
         foregroundImage: "./assets/images/app-icon.png",
         backgroundColor: "#ffffff"
       },
-      softwareKeyboardLayoutMode: "pan"
+      softwareKeyboardLayoutMode: "pan",
+      permissions: [
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE"
+      ]
     },
     web: {
       bundler: "metro",
