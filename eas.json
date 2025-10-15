@@ -1,7 +1,6 @@
-
 {
   "cli": {
-    "version": ">= 5.9.3"
+    "version": ">= 5.2.0"
   },
   "build": {
     "development": {
@@ -29,6 +28,7 @@
       }
     },
     "production": {
+      "autoIncrement": true,
       "android": {
         "buildType": "app-bundle"
       },
@@ -40,6 +40,9 @@
       "android": {
         "buildType": "apk",
         "gradleCommand": ":app:assembleRelease"
+      },
+      "env": {
+        "EXPO_NO_CAPABILITY_SYNC": "1"
       }
     }
   },
