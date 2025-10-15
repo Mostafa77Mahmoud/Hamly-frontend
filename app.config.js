@@ -28,7 +28,8 @@ export default {
       adaptiveIcon: {
         foregroundImage: "./assets/images/app-icon.png",
         backgroundColor: "#ffffff"
-      }
+      },
+      softwareKeyboardLayoutMode: "pan"
     },
     web: {
       bundler: "metro",
