@@ -38,8 +38,7 @@
     },
     "production-apk": {
       "android": {
-        "buildType": "apk",
-        "gradleCommand": ":app:assembleRelease"
+        "buildType": "apk"
       },
       "env": {
         "EXPO_NO_CAPABILITY_SYNC": "1"
