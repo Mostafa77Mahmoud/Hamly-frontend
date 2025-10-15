@@ -80,15 +80,28 @@ export function isBackendAvailable(): boolean {
     return false;
   }
   
-  // If localhost on mobile (React Native), backend is not available
-  if (typeof window === 'undefined' && baseURL.includes('localhost')) {
-    console.log('🚫 [API_CONFIG] Backend not available (localhost on mobile)');
+  // Parse the resolved base URL
+  let url: URL;
+  try {
+    url = new URL(baseURL);
+  } catch (error) {
+    console.log('🚫 [API_CONFIG] Invalid base URL:', baseURL);
     return false;
   }
   
-  // If the URL is valid and not localhost on mobile, backend is available
-  const isAvailable = !!(envURL && envURL !== '' && !envURL.includes('localhost'));
-  console.log(`${isAvailable ? '✅' : '⚠️'} [API_CONFIG] Backend available:`, isAvailable, 'URL:', baseURL);
+  // Check if we're on native (React Native) - window is undefined
+  const isNative = typeof window === 'undefined';
+  
+  // On native, reject localhost/loopback addresses
+  if (isNative && (url.hostname === 'localhost' || url.hostname === '127.0.0.1' || url.hostname.startsWith('192.168.'))) {
+    console.log('🚫 [API_CONFIG] Backend not available (localhost on native):', url.hostname);
+    return false;
+  }
+  
+  // On web/browser, allow the origin-based fallback
+  // Backend is available if we have a valid URL
+  const isAvailable = !!baseURL && baseURL !== '';
+  console.log(`${isAvailable ? '✅' : '⚠️'} [API_CONFIG] Backend available:`, isAvailable, 'URL:', baseURL, 'Native:', isNative);
   return isAvailable;
 }
 
