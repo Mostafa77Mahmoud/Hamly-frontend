@@ -21,7 +21,22 @@ Hamly is a comprehensive pregnancy tracking and health management application bu
 
 ## Recent Changes (October 15, 2025)
 
-### Latest Updates - Mobile APK Critical Fixes (Complete)
+### Latest Updates - Backend API Crash Fix (Complete) - October 15, 2025
+- ✅ **CRITICAL: Fixed APK crashes when backend unavailable** - App no longer crashes when EXPO_PUBLIC_API_BASE_URL is localhost or not set
+- ✅ **Made all backend API calls optional** - AI features (medication safety, symptom analysis, lab processing) gracefully handle backend unavailability
+- ✅ **Smart backend detection** - Automatically detects if backend is available based on environment (web vs native) and URL
+- ✅ **Graceful fallbacks** - Shows helpful Arabic messages when backend unavailable, app continues working with Supabase
+- ✅ **Web environment support** - Correctly allows origin-based fallback URLs on web/browser
+- ✅ **Native environment protection** - Rejects localhost/loopback addresses on Android/iOS to prevent crashes
+- ✅ Files modified:
+  - utils/apiConfig.ts (added isBackendAvailable() and safeFetch() helpers)
+  - app/(tabs)/medications.tsx (optional AI medication analysis with fallback)
+  - app/(tabs)/health.tsx (optional AI symptom analysis with graceful skip)
+  - utils/labProcessor.ts (optional AI lab processing with error handling)
+- ✅ **Production APK ready** - App works perfectly with Supabase only, backend is optional for AI features
+- 📄 **Build instructions created** - See BUILD_INSTRUCTIONS.md for production APK build guide
+
+### Previous Update - Mobile APK Critical Fixes (Complete)
 - ✅ **CRITICAL: Fixed all Android crashes** - Replaced all `performance.now()` with `Date.now()` for native compatibility
 - ✅ **Fixed keyboard shake/vibration** - Disabled KeyboardAvoidingView on Android, added pan mode, extra padding
 - ✅ **Protected all tracing functions** - Added try-catch around all tracing to prevent crashes
