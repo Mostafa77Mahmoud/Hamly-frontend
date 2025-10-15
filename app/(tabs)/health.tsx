@@ -48,7 +48,7 @@ import { generateTraceId, logTrace } from "@/utils/errorHandling";
 import { calculateGestationalAge } from "@/utils/pregnancy";
 import { supabase } from "@/utils/supabase";
 import { persistentWriteQueue } from "@/utils/persistentWriteQueue";
-import { getApiUrl } from "@/utils/apiConfig";
+import { getApiUrl, safeFetch, isBackendAvailable } from "@/utils/apiConfig";
 
 export default function HealthScreen() {
   const {
@@ -180,59 +180,68 @@ export default function HealthScreen() {
         // This ensures we always have the latest data from database
         console.log('🔄 Letting backend fetch fresh context from database for userId:', session.user.id);
 
-        const response = await Promise.race([
-          fetch(getApiUrl('analyzeSymptom'), {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              ...(session?.access_token
-                ? { Authorization: `Bearer ${session.access_token}` }
-                : {}),
-            },
-            body: JSON.stringify({
-              symptom: {
-                type: newSymptom.type,
-                severity: parseInt(newSymptom.severity),
-                description: newSymptom.description,
-                triggers: newSymptom.triggers,
-                date: newSymptom.date,
-              },
-              // Send only userId - backend will fetch everything else
-              userId: session.user.id,
-              language: getCurrentLanguage(),
-            }),
-          }),
-          new Promise<never>((_, reject) =>
-            setTimeout(
-              () => reject(new Error("AI analysis timeout after 25 seconds")),
-              25000,
-            ),
-          ),
-        ]);
-
-        const analysisTime = Date.now() - analysisStartTime;
-
-        if (response.ok) {
-          const responseText = await response.text();
-          console.log(`[${operationId}] 📄 Raw AI response (first 200 chars):`, responseText.substring(0, 200) + "...");
-
-          try {
-            analysisResult = JSON.parse(responseText);
-            console.log(`[${operationId}] ✅ AI analysis completed successfully in ${analysisTime}ms`);
-            logTrace(traceId, "analysis-success", {
-              hasAnalysis: !!analysisResult,
-            });
-          } catch (parseError) {
-            console.error(`[${operationId}] ❌ Failed to parse AI response:`, {
-              error: parseError instanceof Error ? parseError.message : String(parseError),
-              responseText
-            });
-            throw new Error("فشل في معالجة رد الذكاء الاصطناعي");
-          }
+        // Check if backend is available
+        if (!isBackendAvailable()) {
+          console.log(`[${operationId}] ⚠️ Backend not available - skipping AI analysis`);
+          setAnalysisStatus("الباك إند غير متاح، سيتم الحفظ بدون تحليل AI...");
         } else {
-          const errorText = await response.text();
-          console.error(`[${operationId}] ❌ AI analysis failed with status ${response.status}:`, errorText);
-          throw new Error(`AI analysis failed with status: ${response.status}`);
+          const response = await Promise.race([
+            safeFetch(getApiUrl('analyzeSymptom'), {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                ...(session?.access_token
+                  ? { Authorization: `Bearer ${session.access_token}` }
+                  : {}),
+              },
+              body: JSON.stringify({
+                symptom: {
+                  type: newSymptom.type,
+                  severity: parseInt(newSymptom.severity),
+                  description: newSymptom.description,
+                  triggers: newSymptom.triggers,
+                  date: newSymptom.date,
+                },
+                // Send only userId - backend will fetch everything else
+                userId: session.user.id,
+                language: getCurrentLanguage(),
+              }),
+            }),
+            new Promise<Response | null>((_, reject) =>
+              setTimeout(
+                () => reject(new Error("AI analysis timeout after 25 seconds")),
+                25000,
+              ),
+            ),
+          ]);
+
+          const analysisTime = Date.now() - analysisStartTime;
+
+          if (response && response.ok) {
+            const responseText = await response.text();
+            console.log(`[${operationId}] 📄 Raw AI response (first 200 chars):`, responseText.substring(0, 200) + "...");
+
+            try {
+              analysisResult = JSON.parse(responseText);
+              console.log(`[${operationId}] ✅ AI analysis completed successfully in ${analysisTime}ms`);
+              logTrace(traceId, "analysis-success", {
+                hasAnalysis: !!analysisResult,
+              });
+            } catch (parseError) {
+              console.error(`[${operationId}] ❌ Failed to parse AI response:`, {
+                error: parseError instanceof Error ? parseError.message : String(parseError),
+                responseText
+              });
+              throw new Error("فشل في معالجة رد الذكاء الاصطناعي");
+            }
+          } else if (response && !response.ok) {
+            const errorText = await response.text();
+            console.error(`[${operationId}] ❌ AI analysis failed with status ${response.status}:`, errorText);
+            throw new Error(`AI analysis failed with status: ${response.status}`);
+          } else {
+            console.log(`[${operationId}] ⚠️ API call failed - skipping AI analysis`);
+            setAnalysisStatus("فشل الاتصال بالباك إند، سيتم الحفظ بدون تحليل AI...");
+          }
         }
       } catch (analysisError) {
         console.error(`[${operationId}] ❌ AI analysis error:`, {

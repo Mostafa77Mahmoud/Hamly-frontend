@@ -59,7 +59,7 @@ import ModernHeader from "@/components/ModernHeader";
 import LocalizedRow from "@/components/LocalizedRow";
 import { clearCache, CACHE_KEYS } from "@/utils/cacheManager";
 import { persistentWriteQueue } from "@/utils/persistentWriteQueue";
-import { getApiUrl } from "@/utils/apiConfig";
+import { getApiUrl, safeFetch, isBackendAvailable } from "@/utils/apiConfig";
 
 export default function MedicationsScreen() {
   const {
@@ -216,13 +216,27 @@ export default function MedicationsScreen() {
           timestamp: new Date().toISOString(),
         };
 
+      // Check if backend is available
+      if (!isBackendAvailable()) {
+        console.log("⚠️ [MEDICATION] Backend not available - using basic safety info");
+        const basicInfo = getMedicationSafetyInfo(medicationName);
+        return {
+          safetyAnalysis: basicInfo?.safetyInfo || "لا توجد معلومات تفصيلية متاحة حالياً. يرجى استشارة الطبيب.",
+          fdaCategory: basicInfo?.fdaCategory || "C",
+          risks: basicInfo?.risks || [],
+          benefits: basicInfo?.benefits || [],
+          recommendations: ["يرجى استشارة الطبيب قبل تناول هذا الدواء"],
+          isBasicInfo: true,
+        };
+      }
+
       console.log("🚀 [MEDICATION] Sending request to:", apiUrl);
       console.log("📦 [MEDICATION] Payload:", JSON.stringify(requestPayload).substring(0, 200));
       console.log("🔐 [MEDICATION] Has auth token:", !!session?.access_token);
 
-      // تحسين timeout للـ AI analysis (30 ثانية)
+      // Use safe fetch with timeout for AI analysis (30 seconds)
       const response = await Promise.race([
-        fetch(apiUrl, {
+        safeFetch(apiUrl, {
           method: "POST",
           headers: session?.access_token
             ? {
@@ -234,13 +248,27 @@ export default function MedicationsScreen() {
               },
           body: JSON.stringify(requestPayload),
         }),
-        new Promise<never>((_, reject) =>
+        new Promise<Response | null>((_, reject) =>
           setTimeout(
             () => reject(new Error("AI analysis timeout after 30 seconds")),
             30000,
           ),
         ),
       ]);
+
+      // If backend not available or request failed, use basic info
+      if (!response) {
+        console.log("⚠️ [MEDICATION] API call failed - using basic safety info");
+        const basicInfo = getMedicationSafetyInfo(medicationName);
+        return {
+          safetyAnalysis: basicInfo?.safetyInfo || "لا توجد معلومات تفصيلية متاحة حالياً. يرجى استشارة الطبيب.",
+          fdaCategory: basicInfo?.fdaCategory || "C",
+          risks: basicInfo?.risks || [],
+          benefits: basicInfo?.benefits || [],
+          recommendations: ["يرجى استشارة الطبيب قبل تناول هذا الدواء"],
+          isBasicInfo: true,
+        };
+      }
 
       console.log("📡 [MEDICATION] Response status:", response.status);
 

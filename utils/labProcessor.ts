@@ -1,7 +1,7 @@
 import { Platform } from 'react-native';
 import * as FileSystem from 'expo-file-system';
 import { getCurrentLanguage } from '@/utils/i18n';
-import { getApiUrl } from '@/utils/apiConfig';
+import { getApiUrl, safeFetch, isBackendAvailable } from '@/utils/apiConfig';
 
 export interface ExtractedLabData {
   testName: string;
@@ -83,7 +83,16 @@ export async function processLabDocument(documentUri: string, mimeType?: string)
       console.warn('Could not get auth session for lab processing:', error);
     }
 
-    const response = await fetch(apiUrl, {
+    // Check if backend is available
+    if (!isBackendAvailable()) {
+      console.log('⚠️ Backend not available - cannot process lab report');
+      return {
+        success: false,
+        error: 'خدمة معالجة التحليلات غير متاحة حالياً. يمكنك إدخال النتائج يدوياً.',
+      };
+    }
+
+    const response = await safeFetch(apiUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -98,6 +107,15 @@ export async function processLabDocument(documentUri: string, mimeType?: string)
     });
 
     const apiTime = Date.now() - startTime - conversionTime;
+
+    if (!response) {
+      console.log('⚠️ API call failed - backend not available');
+      return {
+        success: false,
+        error: 'فشل الاتصال بالباك إند. يمكنك إدخال النتائج يدوياً.',
+      };
+    }
+
     console.log('API response received', { status: response.status, apiTimeMs: apiTime });
 
     if (!response.ok) {

@@ -68,3 +68,42 @@ export function createAuthHeaders(accessToken?: string): Record<string, string> 
 
   return headers;
 }
+
+// Check if backend API is available (not localhost on mobile)
+export function isBackendAvailable(): boolean {
+  const baseURL = getApiBase();
+  const envURL = process.env.EXPO_PUBLIC_API_BASE_URL;
+  
+  // If explicitly set to empty string, backend is disabled
+  if (envURL === '') {
+    console.log('🚫 [API_CONFIG] Backend disabled (empty env var)');
+    return false;
+  }
+  
+  // If localhost on mobile (React Native), backend is not available
+  if (typeof window === 'undefined' && baseURL.includes('localhost')) {
+    console.log('🚫 [API_CONFIG] Backend not available (localhost on mobile)');
+    return false;
+  }
+  
+  // If the URL is valid and not localhost on mobile, backend is available
+  const isAvailable = !!(envURL && envURL !== '' && !envURL.includes('localhost'));
+  console.log(`${isAvailable ? '✅' : '⚠️'} [API_CONFIG] Backend available:`, isAvailable, 'URL:', baseURL);
+  return isAvailable;
+}
+
+// Safe API call wrapper with error handling
+export async function safeFetch(url: string, options?: RequestInit): Promise<Response | null> {
+  if (!isBackendAvailable()) {
+    console.log('⏭️ [API_CONFIG] Skipping API call (backend not available):', url);
+    return null;
+  }
+  
+  try {
+    const response = await fetch(url, options);
+    return response;
+  } catch (error) {
+    console.error('❌ [API_CONFIG] API call failed:', error);
+    return null;
+  }
+}
