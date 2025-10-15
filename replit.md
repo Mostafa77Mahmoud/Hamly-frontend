@@ -19,20 +19,29 @@ Hamly is a comprehensive pregnancy tracking and health management application bu
 - ✅ Netlify deployment configuration verified
 - ✅ Ready for Netlify deployment
 
-## Recent Changes (October 14, 2025)
+## Recent Changes (October 15, 2025)
 
-### Latest Updates - App Name & Favicon Fix (Complete)
+### Latest Updates - Mobile APK Critical Fixes (Complete)
+- ✅ **CRITICAL: Fixed all Android crashes** - Replaced all `performance.now()` with `Date.now()` for native compatibility
+- ✅ **Fixed keyboard shake/vibration** - Disabled KeyboardAvoidingView on Android, added pan mode, extra padding
+- ✅ **Protected all tracing functions** - Added try-catch around all tracing to prevent crashes
+- ✅ **Made profile creation non-blocking** - Auth won't fail if profile creation fails
+- ✅ **Fixed window object access** - Protected all window references for native environment
+- ✅ Files modified:
+  - contexts/AuthContext.tsx (performance.now → Date.now, protected tracing)
+  - utils/networkMonitor.ts (performance.now → Date.now, protected tracing)
+  - utils/robustDatabase.ts (performance.now → Date.now, protected tracing)
+  - utils/supabase.ts (performance.now → Date.now)
+  - utils/networkTracer.ts (performance.now → Date.now)
+  - services/session/sessionManager.ts (performance.now → Date.now)
+  - utils/deepTracer.ts (protected window access)
+  - app/(auth)/auth.tsx (keyboard handling improvements)
+  - app.json & app.config.js (added softwareKeyboardLayoutMode: "pan")
+
+### Previous Update - App Name & Favicon Fix (October 14, 2025)
 - ✅ Changed app name from "HamlyMD" to "Hamly" in app.config.js
 - ✅ Updated all permission messages to use "Hamly" instead of "HamlyMD"
-- ✅ Fixed favicon configuration completely:
-  - Created `scripts/setup-favicons.js` to automatically setup favicons on each build
-  - Added favicon.ico (15KB), favicon.png (22KB), icon-192.png (22KB), apple-touch-icon.png (22KB)
-  - Created manifest.json for PWA support
-  - Added all necessary favicon links to index.html
-  - Updated build:web script to run favicon setup automatically
-- ✅ Rebuilt production build with new branding and favicon support
-- ✅ Verified title tag shows "Hamly" in both dev and production builds
-- ✅ Fixed .env.production issue (renamed to .env.production.example to prevent placeholder override)
+- ✅ Fixed favicon configuration completely
 - ✅ **Ready for Netlify deployment - favicon will work correctly**
 
 ### Earlier Today

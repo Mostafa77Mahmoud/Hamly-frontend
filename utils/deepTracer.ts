@@ -68,8 +68,13 @@ export const printTimeline = () => tracer.printTimeline();
 export const clearTimeline = () => tracer.clearTimeline();
 export const exportTimeline = () => tracer.exportTimeline();
 
-if (typeof window !== 'undefined') {
-  (window as any).printTimeline = printTimeline;
-  (window as any).exportTimeline = exportTimeline;
-  (window as any).getTimeline = getTimeline;
+// Only expose to window in web environment
+if (typeof window !== 'undefined' && typeof (window as any).document !== 'undefined') {
+  try {
+    (window as any).printTimeline = printTimeline;
+    (window as any).exportTimeline = exportTimeline;
+    (window as any).getTimeline = getTimeline;
+  } catch (e) {
+    console.warn('Could not attach timeline functions to window:', e);
+  }
 }

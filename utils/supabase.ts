@@ -624,7 +624,7 @@ export async function selectWithSignal<T>(
 
 
 export async function refreshSession(): Promise<{ session: any; error: any }> {
-  const start = performance.now();
+  const start = Date.now();
 
   traceEvent('SUPABASE', 'refresh_session_start', { timestamp: new Date().toISOString() });
   traceRequest('refreshSession', {
@@ -635,7 +635,7 @@ export async function refreshSession(): Promise<{ session: any; error: any }> {
   try {
     // Use the proxied supabase client to ensure connection health before refresh
     const { data, error } = await supabase.auth.refreshSession();
-    const latencyMs = performance.now() - start;
+    const latencyMs = Date.now() - start;
 
     if (error) {
       console.error('❌ Session refresh failed:', error);
@@ -682,7 +682,7 @@ export async function refreshSession(): Promise<{ session: any; error: any }> {
         return { session: null, error: null }; // Indicate success but no session
     }
   } catch (err) {
-    const latencyMs = performance.now() - start;
+    const latencyMs = Date.now() - start;
     console.error('❌ Session refresh error:', err);
     traceEvent('SUPABASE', 'refresh_session_exception', { error: err, latencyMs });
     logSupabaseRequest('auth.refreshSession', { error: err, latencyMs, status: 'exception' });
@@ -708,7 +708,7 @@ export async function ensureSupabaseConnection(
   options: EnsureConnectionOptions = {}
 ): Promise<{ ok: boolean; error?: any; recreated?: boolean }> {
   const { userId, timeoutMs = 60000, maxAttempts = 5 } = options;
-  const start = performance.now();
+  const start = Date.now();
 
   console.log('🔍 Ensuring Supabase connection...');
   traceEvent('SUPABASE', 'ensure_connection_start', { userId, timeoutMs, maxAttempts });
@@ -760,7 +760,7 @@ export async function ensureSupabaseConnection(
   });
 
   if (result.ok) {
-    const latencyMs = performance.now() - start;
+    const latencyMs = Date.now() - start;
     console.log('✅ Supabase connection healthy');
     traceRequest('ensureSupabaseConnection', {
       phase: 'response',
@@ -785,7 +785,7 @@ export async function ensureSupabaseConnection(
     traceRequest('supabaseClientRecreate', {
       phase: 'response',
       response: { recreated: true },
-      latencyMs: performance.now() - start,
+      latencyMs: Date.now() - start,
     });
 
     // Dispatching a custom event might be useful for other parts of the app
@@ -802,7 +802,7 @@ export async function ensureSupabaseConnection(
       maxAttempts, // Use the specified max attempts for the retry
     });
 
-    const latencyMs = performance.now() - start;
+    const latencyMs = Date.now() - start;
 
     if (result.ok) {
       console.log('✅ Supabase connection restored after recreation');
@@ -822,7 +822,7 @@ export async function ensureSupabaseConnection(
     });
     return { ok: false, error: result.error, recreated: true };
   } catch (error) {
-    const latencyMs = performance.now() - start;
+    const latencyMs = Date.now() - start;
     console.error('❌ Failed to recreate Supabase client:', error);
     traceRequest('ensureSupabaseConnection', {
       phase: 'error',

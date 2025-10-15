@@ -1,0 +1,38 @@
+~/workspace$ npx eas-cli build --platform android --profile production-apk
+Need to install the following packages:
+eas-cli@16.23.0
+Ok to proceed? (y) Y
+
+npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+npm warn deprecated @oclif/screen@3.0.8: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
+npm warn deprecated lodash.get@4.4.2: This package is deprecated. Use the optional chaining (?.) operator instead.
+npm warn deprecated sudo-prompt@9.1.1: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
+npm warn deprecated rimraf@2.4.5: Rimraf versions prior to v4 are no longer supported
+npm warn deprecated @xmldom/xmldom@0.7.13: this version is no longer supported, please update to at least 0.8.*
+npm warn deprecated glob@6.0.4: Glob versions prior to v9 are no longer supported
+An Expo user account is required to proceed.
+
+Log in to EAS with email or username (exit and run eas login --help to see other login options)
+✔ Email or username … Mostafa_Mahmoud77
+✔ Password … ***************
+The field "cli.appVersionSource" is not set, but it will be required in the future. Learn more: https://docs.expo.dev/build-reference/app-versions/
+Resolved "production" environment for the build. Learn more: https://docs.expo.dev/eas/environment-variables/#setting-the-environment-for-your-builds
+Environment variables with visibility "Plain text" and "Sensitive" loaded from the "production" environment on EAS: EXPO_PUBLIC_API_BASE_URL, EXPO_PUBLIC_API_URL, EXPO_PUBLIC_SUPABASE_ANON_KEY, EXPO_PUBLIC_SUPABASE_URL, GEMINI_API_KEY, service_role_secret_key.
+
+You need to be on SDK 46 or higher, and use expo-updates >= 0.14.4 to use appVersion runtime policy.
+The field "cli.appVersionSource" is not set, but it will be required in the future. Learn more: https://docs.expo.dev/build-reference/app-versions/
+✔ Using remote Android credentials (Expo server)
+✔ Using Keystore from configuration: Build Credentials znbDO0MGS8 (default)
+
+Compressing project files and uploading to EAS Build. Learn more: https://expo.fyi/eas-build-archive
+✔ Compressed project files 1s (4.7 MB)
+✔ Uploaded to EAS 
+✔ Computed project fingerprint
+
+See logs: https://expo.dev/accounts/mostafa_mahmoud77/projects/hamly-md/builds/9f185a70-46f3-4f16-84be-80a3568abb2f
+
+Waiting for build to complete. You can press Ctrl+C to exit.
+✔ Build finished
+
+🤖 Android app:
+https://expo.dev/artifacts/eas/kDshzFBd6gSAbfT6D6SLQx.apk

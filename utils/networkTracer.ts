@@ -298,7 +298,7 @@ export function createTracedPromise<T>(
     url?: string;
   }
 ): Promise<T> {
-  const start = performance.now();
+  const start = Date.now();
 
   traceRequest(label, {
     phase: 'send',
@@ -308,7 +308,7 @@ export function createTracedPromise<T>(
 
   return promiseFactory()
     .then((response) => {
-      const latencyMs = performance.now() - start;
+      const latencyMs = Date.now() - start;
       traceRequest(label, {
         phase: 'response',
         response,
@@ -318,7 +318,7 @@ export function createTracedPromise<T>(
       return response;
     })
     .catch((error) => {
-      const latencyMs = performance.now() - start;
+      const latencyMs = Date.now() - start;
       traceRequest(label, {
         phase: 'error',
         error,

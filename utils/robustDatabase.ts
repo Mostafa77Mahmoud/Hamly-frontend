@@ -41,13 +41,21 @@ export async function saveSymptomRobust(
   const traceId = generateTraceId('symptom_save');
 
   logTrace(traceId, 'save-start', { clientRequestId, dataKeys: Object.keys(symptomData) });
-  traceEvent('ROBUST_DB', 'symptom_save_start', { clientRequestId, traceId });
+  try {
+    traceEvent('ROBUST_DB', 'symptom_save_start', { clientRequestId, traceId });
+  } catch (e) {
+    console.warn('Trace error (non-critical):', e);
+  }
 
   try {
-    const startTime = performance.now();
+    const startTime = Date.now();
     const result = await retryWithBackoff(async () => {
       logTrace(traceId, 'db-insert-attempt');
-      traceEvent('ROBUST_DB', 'symptom_insert_attempt', { traceId });
+      try {
+        traceEvent('ROBUST_DB', 'symptom_insert_attempt', { traceId });
+      } catch (e) {
+        console.warn('Trace error (non-critical):', e);
+      }
 
       const response = await withTimeout(
         supabase

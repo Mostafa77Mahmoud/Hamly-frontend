@@ -112,11 +112,15 @@ class SessionManagerClass {
       throw new Error('SessionManager not initialized');
     }
 
-    const start = performance.now();
-    traceRequest('ensureSession', {
-      phase: 'send',
-      payload: { action: 'get_session' },
-    });
+    const start = Date.now();
+    try {
+      traceRequest('ensureSession', {
+        phase: 'send',
+        payload: { action: 'get_session' },
+      });
+    } catch (e) {
+      console.warn('Trace error (non-critical):', e);
+    }
 
     try {
       // محاولة getSession مع timeout protection
@@ -152,7 +156,7 @@ class SessionManagerClass {
         }
       }
 
-      const getSessionLatency = performance.now() - start;
+      const getSessionLatency = Date.now() - start;
 
       if (error || !session) {
         this.log('warn', 'No valid session found');
@@ -173,9 +177,9 @@ class SessionManagerClass {
         this.log('info', 'Session expired or expiring soon, attempting refresh');
 
         try {
-          const refreshStart = performance.now();
+          const refreshStart = Date.now();
           const { data, error: refreshError } = await this.supabaseClient.auth.refreshSession();
-          const refreshLatency = performance.now() - refreshStart;
+          const refreshLatency = Date.now() - refreshStart;
 
           if (refreshError || !data.session) {
             this.log('error', 'Session refresh failed', { error: refreshError?.message });
@@ -198,7 +202,7 @@ class SessionManagerClass {
           this.emit('session:active', { wasRefreshed: true });
           this.emit('session:validated', { valid: true, wasRefreshed: true });
 
-          const totalLatency = performance.now() - start;
+          const totalLatency = Date.now() - start;
           traceRequest('ensureSession', {
             phase: 'response',
             response: { valid: true, wasRefreshed: true },
@@ -210,7 +214,7 @@ class SessionManagerClass {
           traceRequest('sessionRefresh', {
             phase: 'error',
             error: refreshErr,
-            latencyMs: performance.now() - start,
+            latencyMs: Date.now() - start,
           });
           this.emit('session:stale', { error: refreshErr });
           this.emit('session:validated', { valid: false, wasRefreshed: false });
@@ -221,7 +225,7 @@ class SessionManagerClass {
       this.emit('session:active', { wasRefreshed: false });
       this.emit('session:validated', { valid: true, wasRefreshed: false });
 
-      const totalLatency = performance.now() - start;
+      const totalLatency = Date.now() - start;
       traceRequest('ensureSession', {
         phase: 'response',
         response: { valid: true, wasRefreshed: false },
@@ -233,7 +237,7 @@ class SessionManagerClass {
       traceRequest('ensureSession', {
         phase: 'error',
         error: err,
-        latencyMs: performance.now() - start,
+        latencyMs: Date.now() - start,
       });
       this.emit('session:validated', { valid: false, wasRefreshed: false });
       return { sessionValid: false, wasRefreshed: false };
