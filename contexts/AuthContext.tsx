@@ -183,11 +183,15 @@ export function AuthProvider({ children }: AuthProviderProps) {
   };
 
   const signUp = async (email: string, password: string, fullName: string) => {
-    const start = performance.now();
-    traceRequest('auth.signUp', {
-      phase: 'send',
-      payload: { email: email.trim().toLowerCase(), hasPassword: !!password, fullName: fullName.trim() },
-    });
+    const start = Date.now();
+    try {
+      traceRequest('auth.signUp', {
+        phase: 'send',
+        payload: { email: email.trim().toLowerCase(), hasPassword: !!password, fullName: fullName.trim() },
+      });
+    } catch (traceError) {
+      console.warn('Trace error (non-critical):', traceError);
+    }
 
     try {
       console.log('Attempting signup with email:', email);
@@ -201,7 +205,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         },
       });
 
-      const latencyMs = performance.now() - start;
+      const latencyMs = Date.now() - start;
 
       if (data) {
         console.log('Signup response data:', data);
@@ -213,50 +217,69 @@ export function AuthProvider({ children }: AuthProviderProps) {
           code: error.code || 'NO_CODE',
           status: error.status || 'NO_STATUS'
         });
-        traceRequest('auth.signUp', {
-          phase: 'error',
-          error,
-          latencyMs,
-        });
+        try {
+          traceRequest('auth.signUp', {
+            phase: 'error',
+            error,
+            latencyMs,
+          });
+        } catch (traceError) {
+          console.warn('Trace error (non-critical):', traceError);
+        }
       } else {
-        traceRequest('auth.signUp', {
-          phase: 'response',
-          response: { success: true, hasUser: !!data.user, hasSession: !!data.session },
-          latencyMs,
-        });
+        try {
+          traceRequest('auth.signUp', {
+            phase: 'response',
+            response: { success: true, hasUser: !!data.user, hasSession: !!data.session },
+            latencyMs,
+          });
+        } catch (traceError) {
+          console.warn('Trace error (non-critical):', traceError);
+        }
 
-        // Create profile for new user
+        // Create profile for new user (non-blocking)
         if (data.user) {
           console.log('Creating profile for new user...');
-          // Set isNewUser immediately for signup
           setIsNewUser(true);
-          const isNew = await createOrUpdateProfile(data.user);
-          console.log('New user created, isNewUser flag set to:', true);
+          try {
+            await createOrUpdateProfile(data.user);
+            console.log('New user created, isNewUser flag set to:', true);
+          } catch (profileError) {
+            console.warn('Profile creation failed (non-critical):', profileError);
+          }
         }
       }
 
       return { error };
     } catch (error) {
-      const latencyMs = performance.now() - start;
+      const latencyMs = Date.now() - start;
       console.error('Signup exception details:', {
         message: error instanceof Error ? error.message : 'Unknown error',
         error
       });
-      traceRequest('auth.signUp', {
-        phase: 'error',
-        error,
-        latencyMs,
-      });
+      try {
+        traceRequest('auth.signUp', {
+          phase: 'error',
+          error,
+          latencyMs,
+        });
+      } catch (traceError) {
+        console.warn('Trace error (non-critical):', traceError);
+      }
       return { error };
     }
   };
 
   const signIn = async (email: string, password: string) => {
-    const start = performance.now();
-    traceRequest('auth.signIn', {
-      phase: 'send',
-      payload: { email: email.trim().toLowerCase(), hasPassword: !!password },
-    });
+    const start = Date.now();
+    try {
+      traceRequest('auth.signIn', {
+        phase: 'send',
+        payload: { email: email.trim().toLowerCase(), hasPassword: !!password },
+      });
+    } catch (traceError) {
+      console.warn('Trace error (non-critical):', traceError);
+    }
 
     try {
       console.log('Attempting signin with email:', email);
@@ -265,7 +288,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         password,
       });
 
-      const latencyMs = performance.now() - start;
+      const latencyMs = Date.now() - start;
 
       if (data) {
         console.log('Signin response data:', data);
@@ -277,41 +300,57 @@ export function AuthProvider({ children }: AuthProviderProps) {
           code: error.code || 'NO_CODE',
           status: error.status || 'NO_STATUS'
         });
-        traceRequest('auth.signIn', {
-          phase: 'error',
-          error,
-          latencyMs,
-        });
+        try {
+          traceRequest('auth.signIn', {
+            phase: 'error',
+            error,
+            latencyMs,
+          });
+        } catch (traceError) {
+          console.warn('Trace error (non-critical):', traceError);
+        }
       } else {
-        traceRequest('auth.signIn', {
-          phase: 'response',
-          response: { success: true, hasUser: !!data.user, hasSession: !!data.session },
-          latencyMs,
-        });
+        try {
+          traceRequest('auth.signIn', {
+            phase: 'response',
+            response: { success: true, hasUser: !!data.user, hasSession: !!data.session },
+            latencyMs,
+          });
+        } catch (traceError) {
+          console.warn('Trace error (non-critical):', traceError);
+        }
 
-        // Create or update profile for signed in user
+        // Create or update profile for signed in user (non-blocking)
         if (data.user) {
           console.log('Checking/creating profile for signed in user...');
-          const isNew = await createOrUpdateProfile(data.user);
-          if (isNew) {
-            console.log('First time login detected, setting isNewUser flag');
-            setIsNewUser(true);
+          try {
+            const isNew = await createOrUpdateProfile(data.user);
+            if (isNew) {
+              console.log('First time login detected, setting isNewUser flag');
+              setIsNewUser(true);
+            }
+          } catch (profileError) {
+            console.warn('Profile creation/update failed (non-critical):', profileError);
           }
         }
       }
 
       return { error };
     } catch (error) {
-      const latencyMs = performance.now() - start;
+      const latencyMs = Date.now() - start;
       console.error('Signin exception details:', {
         message: error instanceof Error ? error.message : 'Unknown error',
         error
       });
-      traceRequest('auth.signIn', {
-        phase: 'error',
-        error,
-        latencyMs,
-      });
+      try {
+        traceRequest('auth.signIn', {
+          phase: 'error',
+          error,
+          latencyMs,
+        });
+      } catch (traceError) {
+        console.warn('Trace error (non-critical):', traceError);
+      }
       return { error };
     }
   };
