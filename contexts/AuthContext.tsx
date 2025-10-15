@@ -375,8 +375,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const signOut = async () => {
     try {
       const { error } = await supabase.auth.signOut();
+      // Clear any potentially corrupted session data from local storage on sign out
+      await AsyncStorage.removeItem('hamlymd-auth-token');
+      console.log('[AUTH_CONTEXT] Cleared local session data on sign out.');
       return { error };
     } catch (error) {
+      console.error('[AUTH_CONTEXT] Error during sign out:', error);
       return { error };
     }
   };

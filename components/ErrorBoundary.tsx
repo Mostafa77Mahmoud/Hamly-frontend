@@ -41,6 +41,14 @@ export default class ErrorBoundary extends React.Component<Props, State> {
     this.setState({ isResetting: true });
     
     try {
+      // Clear corrupted session first (most critical)
+      try {
+        await AsyncStorage.removeItem('hamlymd-auth-token');
+        console.log('🧹 [ERROR_BOUNDARY] Cleared auth token');
+      } catch (e) {
+        console.warn('⚠️ Could not clear auth token:', e);
+      }
+
       // Clear all storage to reset app state
       await AsyncStorage.clear();
       console.log('🧹 [ERROR_BOUNDARY] Cleared all storage');

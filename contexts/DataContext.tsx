@@ -519,7 +519,7 @@ export function DataProvider({ children }: DataProviderProps) {
       ]);
 
       const loadTime = Date.now() - startTime;
-      
+
       // Extract results or use safe defaults
       const profile = results[0].status === 'fulfilled' ? results[0].value : null;
       const pregnancy = results[1].status === 'fulfilled' ? results[1].value : null;
@@ -715,7 +715,7 @@ export function DataProvider({ children }: DataProviderProps) {
               loadSymptoms(new AbortController().signal),
               loadLabData(new AbortController().signal),
             ]);
-            
+
             // Extract results or use safe defaults
             const profile = results[0].status === 'fulfilled' ? results[0].value : null;
             const pregnancy = results[1].status === 'fulfilled' ? results[1].value : null;
