@@ -1,0 +1,33 @@
+"I have the Hamly-frontend project loaded with all your previous fixes for backend calls (making them optional, adding try-catch, backend availability checks, etc.). However, the new production APK (built with 'npx eas build --platform android --profile production-apk') still crashes: It opens fine to the login screen, but as soon as I enter login credentials and submit, the app closes immediately. After that, every time I reopen the app, it crashes right away without showing anything. This suggests a persistent issue, possibly in the auth flow (e.g., post-login data fetch failing and not handled), session storage (e.g., corrupted AsyncStorage data causing crashes on app start), or unhandled errors in root components like App.tsx or AuthContext.
+Please fix this permanently and root-cause it step-by-step:
+
+Reproduce the issue locally: Run 'npx expo start --dev-client' or similar to start the app in development mode. Use an Android emulator (install via Android Studio if needed) to simulate the mobile environment. Test login with valid Supabase credentials (assume test user if needed) and observe any console errors in the terminal or via 'adb logcat *:E' for crash stacks. Note any errors related to Supabase, fetch, AsyncStorage, or unhandled promises.
+Inspect auth flow code: Check files like app/(auth)/sign-in.tsx, contexts/AuthContext.tsx, services/auth.ts, and any post-login hooks (e.g., useEffect in protected screens or _layout.tsx). Look for:
+
+Post-login actions like fetching user data, profile, medications/symptoms from Supabase (e.g., supabase.from('users').select() or similar).
+Any unhandled promises or missing try-catch in signIn function or onAuthStateChange.
+Session persistence: How sessions are stored/restored (likely via supabase.auth.getSession() in App.tsx or AuthProvider). If a failed login corrupts the session, it could cause startup crashes.
+
+
+Add robust error handling to auth:
+
+Wrap the entire signIn function in try-catch, log errors (console.error), and show user-friendly alerts (e.g., Alert.alert('خطأ في تسجيل الدخول', error.message)) instead of crashing.
+In post-login (e.g., after supabase.auth.signInWithPassword), handle any data fetch failures by falling back to default/empty data (e.g., if fetching user profile fails, set user to basic auth data only).
+For session restoration: In App.tsx or AuthContext, wrap supabase.auth.getSession() in try-catch. If it fails or returns invalid data, clear storage with AsyncStorage.clear() or supabase.auth.signOut(), and redirect to login without crashing.
+
+
+Handle persistent crashes: Add a global error boundary (if not already there) in App.tsx using ErrorBoundary component from 'expo-router' or a custom one to catch unhandled errors and show a fallback UI (e.g., 'حدث خطأ، جاري إعادة التشغيل' with a button to reset app state). Also, on app start, check for corrupted storage and clear it if needed (e.g., try parsing stored session; if fails, clear).
+Make auth/session resilient: Ensure the app can run without a valid session (e.g., if session fetch fails, treat as logged out). Skip any optional data loads that might crash. Update EXPO_PUBLIC_SUPABASE_URL and EXPO_PUBLIC_SUPABASE_ANON_KEY in .env if needed (use placeholders if I don't provide real ones).
+Test thoroughly:
+
+Test login success/failure in emulator.
+Simulate bad network (e.g., offline mode) during login/post-login.
+Reopen app multiple times after crash to confirm no persistence.
+If backend is involved in post-login (even optionally), ensure it's skipped gracefully.
+
+
+Rebuild and verify: Once fixed, rebuild the production APK with 'npx eas build --platform android --profile production-apk'. Test the new APK in emulator and provide a download link. Commit all changes to the repo, update BUILD_INSTRUCTIONS.md or replit.md with notes on this fix, and confirm the app no longer crashes on login or reopen.
+
+Provide a summary of the root cause, what was changed, and why it's now stable."
+
+This prompt should lead to a final, crash-free version. If the agent needs your real Supabase keys or backend URL, provide them when asked. If it still doesn't fix it, we might need to debug further with tools like browsing the repo or code execution, but this should cover it based on the symptoms.5.9sExpert
