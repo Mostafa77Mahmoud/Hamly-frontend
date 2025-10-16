@@ -5,9 +5,9 @@
   "private": true,
   "scripts": {
     "dev": "cross-env EXPO_NO_TELEMETRY=1 npx expo start",
-    "dev:web": "cross-env EXPO_NO_TELEMETRY=1 HOST=0.0.0.0 npx expo start --web --port 5000",
+    "dev:web": "cross-env EXPO_NO_TELEMETRY=1 HOST=0.0.0.0 EXPO_PUBLIC_SUPABASE_URL=$EXPO_PUBLIC_SUPABASE_URL EXPO_PUBLIC_SUPABASE_ANON_KEY=$EXPO_PUBLIC_SUPABASE_ANON_KEY npx expo start --web --port 5000",
     "build": "expo export --platform web --output-dir dist --dump-sourcemap",
-    "build:web": "cross-env NODE_ENV=production EXPO_NO_SSR=1 EXPO_USE_STATIC=1 EXPO_USE_METRO_REQUIRE=1 npx expo export --platform web --output-dir dist --clear && node scripts/cleanup-build.js && node scripts/setup-favicons.js",
+    "build:web": "cross-env NODE_ENV=production EXPO_NO_SSR=1 EXPO_USE_STATIC=1 EXPO_USE_METRO_REQUIRE=1 EXPO_PUBLIC_SUPABASE_URL=$EXPO_PUBLIC_SUPABASE_URL EXPO_PUBLIC_SUPABASE_ANON_KEY=$EXPO_PUBLIC_SUPABASE_ANON_KEY npx expo export --platform web --output-dir dist --clear && node scripts/cleanup-build.js && node scripts/setup-favicons.js",
     "cleanup": "node scripts/cleanup-build.js",
     "start": "cross-env EXPO_NO_TELEMETRY=1 npx expo start --web --port 5000 --offline",
     "serve": "npx serve -s dist -l 5000",

@@ -1,7 +1,8 @@
-// Environment variables are now available via Replit Secrets
+// Environment variables are now available via Replit Secrets and EAS Secrets
 // No need to load dotenv in Replit environment
 
-export default {
+export default ({ config }) => ({
+  ...config,
   expo: {
     jsEngine: "hermes",
     newArchEnabled: false,
@@ -86,4 +87,4 @@ export default {
       // These will be handled via server-side API endpoints or Replit Secrets
     }
   }
-};
+});

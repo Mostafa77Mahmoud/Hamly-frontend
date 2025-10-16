@@ -19,9 +19,26 @@ Hamly is a comprehensive pregnancy tracking and health management application bu
 - ✅ Netlify deployment configuration verified
 - ✅ Ready for Netlify deployment
 
-## Recent Changes (October 15, 2025)
+## Recent Changes
 
-### Latest Updates - Login Crash Fix (CRITICAL) - October 15, 2025
+### Latest Update - Invalid API Key Fix (CRITICAL) - October 16, 2025
+- ✅ **CRITICAL: Fixed "Invalid API key" error on login** - Updated Supabase anon key to latest version
+- ✅ **Root Cause:** Hardcoded old/expired Supabase anon key in app.config.js fallback was being used instead of environment variables
+- ✅ **Fix 1: Updated anon key** - Changed hardcoded fallback to use the latest valid key from user's Supabase project
+- ✅ **Fix 2: Environment variable passing** - Updated package.json scripts to explicitly pass EXPO_PUBLIC_* variables to Expo bundler
+- ✅ **Fix 3: Function-based config** - Converted app.config.js from static object to function export for proper env var access during EAS builds
+- ✅ Files modified:
+  - app.config.js (function export + updated anon key + env var support)
+  - package.json (dev:web and build:web scripts now pass env vars)
+- ✅ **Result:** Login works correctly in both web and EAS builds. Environment variables properly loaded from Replit Secrets and EAS Secrets
+- 📋 **EAS Build Instructions:** 
+  1. Ensure environment variables are set in EAS project: `EXPO_PUBLIC_SUPABASE_URL`, `EXPO_PUBLIC_SUPABASE_ANON_KEY`, `EXPO_PUBLIC_API_URL=""`, `EXPO_PUBLIC_API_BASE_URL=""`
+  2. Build APK: `eas build --platform android --profile preview-apk`
+  3. The app will work correctly with Supabase auth, no backend server needed
+
+### Previous Updates (October 15, 2025)
+
+### Login Crash Fix (CRITICAL) - October 15, 2025
 - ✅ **CRITICAL: Fixed APK crash on login and persistent crashes on reopen**
 - ✅ **Root Cause:** Promise.all() in DataProvider crashed when any data fetch failed (profile, pregnancy, meds, symptoms, labs)
 - ✅ **Fix 1: Promise.allSettled** - Replaced Promise.all with Promise.allSettled so individual fetch failures don't crash the app
