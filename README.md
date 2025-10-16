@@ -33,11 +33,12 @@ npm install
 EXPO_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 EXPO_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here
 
-# API Configuration (للتطوير المحلي)
-EXPO_PUBLIC_API_BASE_URL=http://localhost:3001
+# API Configuration
+EXPO_PUBLIC_API_URL=https://al-mugwumpian-patience.ngrok-free.dev
+EXPO_PUBLIC_API_BASE_URL=https://al-mugwumpian-patience.ngrok-free.dev
 
-# أو استخدم URL الباك إند المنشور
-# EXPO_PUBLIC_API_BASE_URL=https://your-backend-url.com
+# للتطوير المحلي استخدم:
+# EXPO_PUBLIC_API_BASE_URL=http://localhost:3001
 ```
 
 ### 3. تشغيل التطبيق
@@ -79,9 +80,10 @@ npm run dev
    - اذهب إلى Site settings → Environment variables
    - أضف المتغيرات التالية:
    ```
-   EXPO_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+   EXPO_PUBLIC_SUPABASE_URL=https://uzhtruxyzxtqappavqhr.supabase.co
    EXPO_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
-   EXPO_PUBLIC_API_BASE_URL=https://your-backend-url.com
+   EXPO_PUBLIC_API_URL=https://al-mugwumpian-patience.ngrok-free.dev
+   EXPO_PUBLIC_API_BASE_URL=https://al-mugwumpian-patience.ngrok-free.dev
    ```
 
 5. **النشر**

@@ -52,7 +52,8 @@ If you've deployed your backend to a service like Vercel, Railway, or Render:
 
 ```bash
 # Set your deployed backend URL
-export EXPO_PUBLIC_API_BASE_URL="https://your-backend-url.com"
+export EXPO_PUBLIC_API_URL="https://al-mugwumpian-patience.ngrok-free.dev"
+export EXPO_PUBLIC_API_BASE_URL="https://al-mugwumpian-patience.ngrok-free.dev"
 
 # Build production APK
 npx eas build --platform android --profile production-apk
@@ -68,10 +69,9 @@ npx eas secret:create --scope project --name EXPO_PUBLIC_SUPABASE_URL --value "h
 
 npx eas secret:create --scope project --name EXPO_PUBLIC_SUPABASE_ANON_KEY --value "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV6aHRydXh5enh0cWFwcGF2cWhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjc5ODA4NDUsImV4cCI6MjA0MzU1Njg0NX0.kDZcTPJkZdHfzuTGiYlFO46EXdwsrpGSwaBWxRexDSU" --type string
 
-# Set backend URL (empty for no backend, or your deployed backend URL)
-npx eas secret:create --scope project --name EXPO_PUBLIC_API_BASE_URL --value "" --type string
-# OR if you have a deployed backend:
-# npx eas secret:create --scope project --name EXPO_PUBLIC_API_BASE_URL --value "https://your-backend-url.com" --type string
+# Set backend URL
+npx eas secret:create --scope project --name EXPO_PUBLIC_API_URL --value "https://al-mugwumpian-patience.ngrok-free.dev" --type string
+npx eas secret:create --scope project --name EXPO_PUBLIC_API_BASE_URL --value "https://al-mugwumpian-patience.ngrok-free.dev" --type string
 
 # Then build
 npx eas build --platform android --profile production-apk
