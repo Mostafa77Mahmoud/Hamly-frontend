@@ -236,20 +236,10 @@ export default function MedicationsScreen() {
 
       // Use safe fetch with timeout for AI analysis (30 seconds)
       const response = await Promise.race([
-        fetch(apiUrl, {
+        safeFetch(apiUrl, {
           method: "POST",
-          mode: 'cors',
-          credentials: 'omit',
-          headers: {
-            'ngrok-skip-browser-warning': 'true',
-            'User-Agent': 'Hamly-App',
-            'Content-Type': 'application/json',
-            ...(session?.access_token ? { 'Authorization': `Bearer ${session.access_token}` } : {}),
-          },
+          headers: createAuthHeaders(session?.access_token),
           body: JSON.stringify(requestPayload),
-        }).catch(err => {
-          console.error('❌ [MEDICATION] Fetch error:', err);
-          return null;
         }),
         new Promise<Response | null>((_, reject) =>
           setTimeout(

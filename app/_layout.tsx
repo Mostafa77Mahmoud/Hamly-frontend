@@ -31,7 +31,14 @@ import { isRTL, initializeLanguage } from '@/utils/i18n';
 import { AuthProvider, useAuth } from '@/contexts/AuthContext';
 import { DataProvider } from '@/contexts/DataContext';
 import ErrorBoundary from '@/components/ErrorBoundary';
+import { installNgrokFix } from '@/utils/ngrokFix';
 SplashScreen.preventAutoHideAsync();
+
+// Install network interceptor for debugging
+installNetworkInterceptor();
+
+// Install ngrok fix for headers
+installNgrokFix();
 
 // Note: Supabase check removed for security - should not create test users in production
 

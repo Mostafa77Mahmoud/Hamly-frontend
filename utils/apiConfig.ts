@@ -122,6 +122,7 @@ export function isBackendAvailable(): boolean {
 }
 
 // Safe API call wrapper with error handling
+// Note: ngrok headers are added globally via ngrokFix.ts
 export async function safeFetch(url: string, options?: RequestInit): Promise<Response | null> {
   if (!isBackendAvailable()) {
     console.log('⏭️ [API_CONFIG] Skipping API call (backend not available):', url);
@@ -129,20 +130,9 @@ export async function safeFetch(url: string, options?: RequestInit): Promise<Res
   }
   
   try {
-    // Add ngrok skip headers to all requests (including OPTIONS preflight)
-    const headers = {
-      'ngrok-skip-browser-warning': 'true',
-      'User-Agent': 'Hamly-App',
-      ...options?.headers,
-    };
-    
     console.log(`🌐 [API_CONFIG] Fetching: ${url.substring(url.lastIndexOf('/'))}`);
     
-    const response = await fetch(url, {
-      ...options,
-      headers,
-      mode: 'cors', // Explicitly set CORS mode
-    });
+    const response = await fetch(url, options);
     
     console.log(`✅ [API_CONFIG] Response: ${response.status}`);
     return response;
