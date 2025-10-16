@@ -59,7 +59,7 @@ import ModernHeader from "@/components/ModernHeader";
 import LocalizedRow from "@/components/LocalizedRow";
 import { clearCache, CACHE_KEYS } from "@/utils/cacheManager";
 import { persistentWriteQueue } from "@/utils/persistentWriteQueue";
-import { getApiUrl, safeFetch, isBackendAvailable, createAuthHeaders } from "@/utils/apiConfig";
+import { getApiUrl, safeFetch, isBackendAvailable, createAuthHeaders, createFetchOptions } from "@/utils/apiConfig";
 
 export default function MedicationsScreen() {
   const {
@@ -236,10 +236,20 @@ export default function MedicationsScreen() {
 
       // Use safe fetch with timeout for AI analysis (30 seconds)
       const response = await Promise.race([
-        safeFetch(apiUrl, {
+        fetch(apiUrl, {
           method: "POST",
-          headers: createAuthHeaders(session?.access_token),
+          mode: 'cors',
+          credentials: 'omit',
+          headers: {
+            'ngrok-skip-browser-warning': 'true',
+            'User-Agent': 'Hamly-App',
+            'Content-Type': 'application/json',
+            ...(session?.access_token ? { 'Authorization': `Bearer ${session.access_token}` } : {}),
+          },
           body: JSON.stringify(requestPayload),
+        }).catch(err => {
+          console.error('❌ [MEDICATION] Fetch error:', err);
+          return null;
         }),
         new Promise<Response | null>((_, reject) =>
           setTimeout(

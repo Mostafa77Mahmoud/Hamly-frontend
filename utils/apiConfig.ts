@@ -59,9 +59,9 @@ export const API_CONFIG = {
 // Helper to create authenticated headers
 export function createAuthHeaders(accessToken?: string): Record<string, string> {
   const headers: Record<string, string> = {
+    'ngrok-skip-browser-warning': 'true', // Must be first to work with ngrok
+    'User-Agent': 'Hamly-App',
     'Content-Type': 'application/json',
-    'ngrok-skip-browser-warning': 'true', // Skip ngrok browser warning page
-    'User-Agent': 'Hamly-App', // Add custom user agent for ngrok
   };
 
   if (accessToken) {
@@ -69,6 +69,20 @@ export function createAuthHeaders(accessToken?: string): Record<string, string> 
   }
 
   return headers;
+}
+
+// Helper to create fetch options with ngrok compatibility
+export function createFetchOptions(options?: RequestInit): RequestInit {
+  return {
+    ...options,
+    mode: 'cors',
+    credentials: 'omit', // Don't send credentials to avoid CORS issues
+    headers: {
+      'ngrok-skip-browser-warning': 'true',
+      'User-Agent': 'Hamly-App',
+      ...options?.headers,
+    },
+  };
 }
 
 // Check if backend API is available (not localhost on mobile)
@@ -115,17 +129,22 @@ export async function safeFetch(url: string, options?: RequestInit): Promise<Res
   }
   
   try {
-    // Add ngrok skip headers to all requests
+    // Add ngrok skip headers to all requests (including OPTIONS preflight)
     const headers = {
-      ...options?.headers,
       'ngrok-skip-browser-warning': 'true',
       'User-Agent': 'Hamly-App',
+      ...options?.headers,
     };
+    
+    console.log(`🌐 [API_CONFIG] Fetching: ${url.substring(url.lastIndexOf('/'))}`);
     
     const response = await fetch(url, {
       ...options,
       headers,
+      mode: 'cors', // Explicitly set CORS mode
     });
+    
+    console.log(`✅ [API_CONFIG] Response: ${response.status}`);
     return response;
   } catch (error) {
     console.error('❌ [API_CONFIG] API call failed:', error);
