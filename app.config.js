@@ -80,8 +80,8 @@ export default {
       eas: {
         projectId: "0a70a1df-c52c-44a8-a9fe-3a1e5cb8603e"
       },
-      supabaseUrl: "https://uzhtruxyzxtqappavqhr.supabase.co",
-      supabaseAnonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV6aHRydXh5enh0cWFwcGF2cWhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjc5ODA4NDUsImV4cCI6MjA0MzU1Njg0NX0.kDZcTPJkZdHfzuTGiYlFO46EXdwsrpGSwaBWxRexDSU",
+      supabaseUrl: process.env.EXPO_PUBLIC_SUPABASE_URL || "https://uzhtruxyzxtqappavqhr.supabase.co",
+      supabaseAnonKey: process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV6aHRydXh5enh0cWFwcGF2cWhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc5MjE4NjcsImV4cCI6MjA3MzQ5Nzg2N30.7GtsyCg09d0rtl-iDPTKXm8FkbtObJR1HN7Q3nIGC6c",
       // Note: Server-side API keys (Gemini, ElevenLabs) should NOT be exposed to client
       // These will be handled via server-side API endpoints or Replit Secrets
     }
