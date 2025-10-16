@@ -83,6 +83,7 @@ export default ({ config }) => ({
       },
       supabaseUrl: process.env.EXPO_PUBLIC_SUPABASE_URL || "https://uzhtruxyzxtqappavqhr.supabase.co",
       supabaseAnonKey: process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV6aHRydXh5enh0cWFwcGF2cWhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc5MjE4NjcsImV4cCI6MjA3MzQ5Nzg2N30.7GtsyCg09d0rtl-iDPTKXm8FkbtObJR1HN7Q3nIGC6c",
+      apiBaseUrl: process.env.EXPO_PUBLIC_API_BASE_URL || "https://al-mugwumpian-patience.ngrok-free.dev",
       // Note: Server-side API keys (Gemini, ElevenLabs) should NOT be exposed to client
       // These will be handled via server-side API endpoints or Replit Secrets
     }

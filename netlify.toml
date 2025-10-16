@@ -11,6 +11,8 @@
   NODE_VERSION = "20"
   NPM_FLAGS = "--legacy-peer-deps"
   SECRETS_SCAN_ENABLED = "false"
+  EXPO_PUBLIC_API_URL = "https://al-mugwumpian-patience.ngrok-free.dev"
+  EXPO_PUBLIC_API_BASE_URL = "https://al-mugwumpian-patience.ngrok-free.dev"
 
 # Headers for security and performance
 [[headers]]
