@@ -1,0 +1,85 @@
+import { Buffer } from "buffer";
+import { createClient } from "@supabase/supabase-js";
+import { assembleUserContext, saveGeminiPayload } from "../utils/contextAssembly";
+
+// Initialize Supabase client globally - handle both server and client environments
+const supabaseUrl =
+  process.env.EXPO_PUBLIC_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseKey =
+  process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY ||
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+if (!supabaseUrl || !supabaseKey) {
+  console.error("Missing Supabase environment variables");
+  throw new Error("Missing Supabase environment variables");
+}
+
+const supabase = createClient(supabaseUrl!, supabaseKey!);
+
+export async function POST(request: Request): Promise<Response> {
+  // Define CORS headers
+  const headers = {
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Headers":
+      "Content-Type, Authorization, x-goog-api-key",
+  };
+
+  try {
+    const {
+      medicationName,
+      userId: requestUserId,
+      pregnancyWeek = 0,
+      currentMedications = [],
+      labReports = [],
+      language = "en",
+    } = await request.json();
+
+    console.log("Received medication safety request:", {
+      medicationName,
+      requestUserId,
+      pregnancyWeek,
+      medicationsCount: currentMedications?.length || 0,
+      labReportsCount: labReports?.length || 0,
+      language,
+    });
+
+    // Extract userId from request body or JWT token
+    let userId: string | null = requestUserId || null;
+    const authHeader = request.headers.get("authorization");
+
+    if (!userId && authHeader?.startsWith("Bearer ")) {
+      const token = authHeader.substring(7);
+      try {
+        const payload = JSON.parse(
+          Buffer.from(token.split(".")[1], "base64").toString(),
+        );
+        userId = payload?.sub || null;
+        console.log("Extracted userId from JWT token for medication:", userId);
+      } catch (e) {
+        console.warn("Failed to decode JWT token for medication:", e);
+      }
+    }
+
+    // Validate user_id format (UUID format)
+    const uuidRegex =
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    if (!userId || !uuidRegex.test(userId)) {
+      console.error("Invalid or missing user ID for medication safety");
+      return new Response(
+        JSON.stringify({ error: "User ID is required" }),
+        { status: 400, headers },
+      );
+    }
+    console.log("✅ Using userId for medication safety:", userId);
+
+    // Extract access token from Authorization header
+    const authorizationHeader = request.headers.get("authorization");
+    const accessToken = authorizationHeader?.startsWith("Bearer ") 
+      ? authorizationHeader.substring(7) 
+      : undefined;
+
+    // Assemble fresh user context from database - ALWAYS use database as source of truth
+    console.log("🔍 Assembling fresh user context from database for userId:", userId);
+    const userContext = await assembleUserContext(userId, accessToken);
