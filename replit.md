@@ -21,7 +21,27 @@ Hamly is a comprehensive pregnancy tracking and health management application bu
 
 ## Recent Changes
 
-### Latest Update - Invalid API Key Fix (CRITICAL) - October 16, 2025
+### Latest Update - API Domain Configuration (October 16, 2025)
+- ✅ **Connected all API endpoints to ngrok domain** - `https://al-mugwumpian-patience.ngrok-free.dev`
+- ✅ **Updated Netlify configuration** - Added EXPO_PUBLIC_API_URL and EXPO_PUBLIC_API_BASE_URL to build environment
+- ✅ **Updated app.config.js** - Added apiBaseUrl to extra section for EAS builds
+- ✅ **Updated documentation** - README.md and BUILD_INSTRUCTIONS.md now reflect the new domain
+- ✅ **Security fix** - Removed sensitive API keys from .env.production.example
+- ✅ **Updated workflow** - Dev server now uses ngrok domain for API calls
+- ✅ Files modified:
+  - netlify.toml (added API environment variables)
+  - app.config.js (added apiBaseUrl configuration)
+  - README.md (updated with new domain)
+  - BUILD_INSTRUCTIONS.md (updated EAS secrets instructions)
+  - .env.production.example (removed sensitive keys, added new domain)
+  - Workflow configuration (added API variables)
+- ✅ **Result:** All API requests now point to https://al-mugwumpian-patience.ngrok-free.dev
+- 📋 **Next Steps:**
+  1. For Netlify: Environment variables are already set in netlify.toml
+  2. For EAS: Run `npx eas secret:create --scope project --name EXPO_PUBLIC_API_BASE_URL --value "https://al-mugwumpian-patience.ngrok-free.dev" --type string`
+  3. For local development in Replit: Set EXPO_PUBLIC_API_BASE_URL in Replit Secrets
+
+### Previous Update - Invalid API Key Fix (CRITICAL) - October 16, 2025
 - ✅ **CRITICAL: Fixed "Invalid API key" error on login** - Updated Supabase anon key to latest version
 - ✅ **Root Cause:** Hardcoded old/expired Supabase anon key in app.config.js fallback was being used instead of environment variables
 - ✅ **Fix 1: Updated anon key** - Changed hardcoded fallback to use the latest valid key from user's Supabase project
