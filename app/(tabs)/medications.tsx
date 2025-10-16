@@ -238,14 +238,7 @@ export default function MedicationsScreen() {
       const response = await Promise.race([
         safeFetch(apiUrl, {
           method: "POST",
-          headers: session?.access_token
-            ? {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${session.access_token}`,
-              }
-            : {
-                "Content-Type": "application/json",
-              },
+          headers: createAuthHeaders(session?.access_token),
           body: JSON.stringify(requestPayload),
         }),
         new Promise<Response | null>((_, reject) =>

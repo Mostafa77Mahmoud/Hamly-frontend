@@ -61,6 +61,7 @@ export function createAuthHeaders(accessToken?: string): Record<string, string> 
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
     'ngrok-skip-browser-warning': 'true', // Skip ngrok browser warning page
+    'User-Agent': 'Hamly-App', // Add custom user agent for ngrok
   };
 
   if (accessToken) {
@@ -114,10 +115,11 @@ export async function safeFetch(url: string, options?: RequestInit): Promise<Res
   }
   
   try {
-    // Add ngrok skip header to all requests
+    // Add ngrok skip headers to all requests
     const headers = {
       ...options?.headers,
       'ngrok-skip-browser-warning': 'true',
+      'User-Agent': 'Hamly-App',
     };
     
     const response = await fetch(url, {

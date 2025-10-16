@@ -1,7 +1,7 @@
 import { Platform } from 'react-native';
 import * as FileSystem from 'expo-file-system';
 import { getCurrentLanguage } from '@/utils/i18n';
-import { getApiUrl, safeFetch, isBackendAvailable } from '@/utils/apiConfig';
+import { getApiUrl, safeFetch, isBackendAvailable, createAuthHeaders } from '@/utils/apiConfig';
 
 export interface ExtractedLabData {
   testName: string;
@@ -97,10 +97,7 @@ export async function processLabDocument(documentUri: string, mimeType?: string)
 
     const response = await safeFetch(apiUrl, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        ...authHeaders,
-      },
+      headers: createAuthHeaders(authHeaders['Authorization']?.replace('Bearer ', '')),
       body: JSON.stringify({
         image: base64Data,
         mimeType: detectedMimeType,
