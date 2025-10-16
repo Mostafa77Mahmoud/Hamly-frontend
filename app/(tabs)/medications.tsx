@@ -59,7 +59,7 @@ import ModernHeader from "@/components/ModernHeader";
 import LocalizedRow from "@/components/LocalizedRow";
 import { clearCache, CACHE_KEYS } from "@/utils/cacheManager";
 import { persistentWriteQueue } from "@/utils/persistentWriteQueue";
-import { getApiUrl, safeFetch, isBackendAvailable } from "@/utils/apiConfig";
+import { getApiUrl, safeFetch, isBackendAvailable, createAuthHeaders } from "@/utils/apiConfig";
 
 export default function MedicationsScreen() {
   const {

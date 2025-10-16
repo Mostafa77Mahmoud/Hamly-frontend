@@ -48,6 +48,9 @@ export async function processLabDocument(documentUri: string, mimeType?: string)
     // Set API URL using apiConfig
     const apiUrl = getApiUrl('processLabReport');
     console.log('Attempting to fetch API:', { apiUrl });
+    
+    // Use createAuthHeaders to ensure ngrok header is included
+    const headers = createAuthHeaders();
 
     // Get auth token and pregnancy context for user context
     let authHeaders = {};

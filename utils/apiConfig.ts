@@ -60,6 +60,7 @@ export const API_CONFIG = {
 export function createAuthHeaders(accessToken?: string): Record<string, string> {
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
+    'ngrok-skip-browser-warning': 'true', // Skip ngrok browser warning page
   };
 
   if (accessToken) {
@@ -113,7 +114,16 @@ export async function safeFetch(url: string, options?: RequestInit): Promise<Res
   }
   
   try {
-    const response = await fetch(url, options);
+    // Add ngrok skip header to all requests
+    const headers = {
+      ...options?.headers,
+      'ngrok-skip-browser-warning': 'true',
+    };
+    
+    const response = await fetch(url, {
+      ...options,
+      headers,
+    });
     return response;
   } catch (error) {
     console.error('❌ [API_CONFIG] API call failed:', error);
